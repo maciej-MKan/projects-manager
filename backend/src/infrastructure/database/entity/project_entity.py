@@ -18,7 +18,16 @@ class ProjectEntity(Base):
 
     author_id: int = Column(Integer, ForeignKey("users.id"))
 
-    author = relationship("User", back_populates="projects")
+    author = relationship(
+        "User",
+        back_populates="projects",
+        cascade="all, delete, delete-orphan"
+    )
 
-    users = relationship("User", secondary="user_projects", back_populates="projects")
+    users = relationship(
+        "User",
+        secondary="user_projects",
+        back_populates="projects",
+        cascade="all, delete, delete-orphan"
+    )
 
