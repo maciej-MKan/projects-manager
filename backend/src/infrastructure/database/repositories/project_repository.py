@@ -1,6 +1,7 @@
 from typing import List
 
 from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
 from backend.src.infrastructure.database.entity.project_entity import ProjectEntity
@@ -8,8 +9,8 @@ from backend.src.infrastructure.database.repositories.contracts.project_reposito
 
 
 class ProjectsRepositoryImpl(ProjectsRepository):
-    def __init__(self, db_uri: str):
-        self.engine = create_engine(db_uri)
+    def __init__(self, engine: Engine):
+        self.engine = engine
 
     def get_all_projects(self) -> List[ProjectEntity]:
         with Session(self.engine) as session:

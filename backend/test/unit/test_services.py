@@ -2,7 +2,6 @@ from datetime import datetime
 from unittest import mock
 
 from backend.src.business.models.DTOProject import Project
-from backend.src.business.models.DTOUser import User
 from backend.src.business.services.projects_service import ProjectsService
 from backend.src.infrastructure.database.entity.project_entity import ProjectEntity
 from backend.src.infrastructure.database.repositories.contracts.project_repository_interface import ProjectsRepository
@@ -14,26 +13,7 @@ MOCK_PROJECT_1 = ProjectEntity(
     start_date=12370123,
     end_date=12371123,
     status="In progress",
-    author=User(
-        id=1,
-        name="John",
-        surname="Doe",
-        email="johndoe@example.com",
-    ),
-    users=[
-        User(
-            id=1,
-            name="John",
-            surname="Doe",
-            email="johndoe@example.com",
-        ),
-        User(
-            id=2,
-            name="Jane",
-            surname="Doe",
-            email="janedoe@example.com",
-        )
-    ]
+    user_id=1
 )
 
 MOCK_PROJECT_2 = ProjectEntity(
@@ -43,26 +23,7 @@ MOCK_PROJECT_2 = ProjectEntity(
     start_date=12371123,
     end_date=12372123,
     status="Planned",
-    author=User(
-        id=2,
-        name="Jane",
-        surname="Doe",
-        email="janedoe@example.com"
-    ),
-    users=[
-        User(
-            id=2,
-            name="Jane",
-            surname="Doe",
-            email="janedoe@example.com",
-        ),
-        User(
-            id=3,
-            name="Jack",
-            surname="Smith",
-            email="jacksmith@example.com",
-        )
-    ]
+    user_id=2
 )
 
 
