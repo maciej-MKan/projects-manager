@@ -5,8 +5,8 @@ from backend.src.utils.mappers import *
 
 
 class ProjectsService(Projects):
-    def __int__(self):
-        self.project_repository: ProjectsRepository = None
+    def __init__(self, project_repository: ProjectsRepository):
+        self.project_repository = project_repository
 
     def get_all_projects(self):
         project_entity = self.project_repository.get_all_projects()

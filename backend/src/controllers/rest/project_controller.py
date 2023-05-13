@@ -5,8 +5,8 @@ from backend.src.business.services.contracts.project_interface import Projects
 
 
 class ProjectController:
-    def __init__(self):
-        self.projects_service = Projects
+    def __init__(self, project_service: Projects):
+        self.projects_service = project_service
 
     @view_config(route_name="index", request_method="GET", renderer="json")
     def all_projects(self, request) -> Response:
