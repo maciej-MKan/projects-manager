@@ -1,7 +1,17 @@
+from ...infrastructure.configuration.database_configuration import DataBaseEngine
+
 from ...business.services.projects_service import ProjectsService
 from ...controllers.rest.project_controller import ProjectController
-from ...infrastructure.configuration.database_configuration import DataBaseEngine
 from ...infrastructure.database.repositories.project_repository import ProjectsRepositoryImpl
+
+from ...business.services.users_service import UsersService
+from ...controllers.rest.user_controller import UserController
+from ...infrastructure.database.repositories.user_repository import UsersRepositoryImpl
+
+from ...business.services.comments_service import CommentsService
+from ...controllers.rest.comment_controller import CommentController
+from ...infrastructure.database.repositories.comment_repository import CommentsRepositoryImpl
+
 
 class ApplicationConfiguration:
 
@@ -25,7 +35,6 @@ class ApplicationConfiguration:
         self._comment_controller = CommentController(self._comment_service)
 
     def get_project_controller(self):
-
         return self._project_controller
 
     def get_project_service(self):
