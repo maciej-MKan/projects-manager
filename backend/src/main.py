@@ -8,8 +8,8 @@ from backend.src.controllers.rest.project_controller import ProjectController
 
 def get_app():
     with Configurator() as config:
+        config.add_view(get_config().get_all_projects, route_name='projects')
         config.add_route('projects', '/projects')
-        config.add_view(get_config().all_projects, route_name='projects')
         app = config.make_wsgi_app()
 
     return app

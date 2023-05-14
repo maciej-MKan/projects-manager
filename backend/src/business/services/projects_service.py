@@ -5,6 +5,9 @@ from backend.src.utils.mappers import *
 
 
 class ProjectsService(Projects):
+    def get_projects_by_user_id(self, user_id):
+        pass
+
     def __init__(self, project_repository: ProjectsRepository):
         self.project_repository = project_repository
 
@@ -13,7 +16,7 @@ class ProjectsService(Projects):
         project_list: list[DTOProject] = []
 
         for entity in project_entity:
-            project_list.append(project_entity_dto_mapper(entity).get_json())
+            project_list.append(project_entity_dto_mapper(entity))
         print(project_list)
         return project_list
 

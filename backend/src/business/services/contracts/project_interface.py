@@ -22,3 +22,7 @@ class Projects(ABC):
     @abstractmethod
     def delete_project(self, project_id):
         pass
+
+    @abstractmethod
+    def get_projects_by_user_id(self, user_id):
+        pass

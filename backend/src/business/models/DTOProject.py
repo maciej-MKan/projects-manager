@@ -1,7 +1,6 @@
 from datetime import datetime
-from pydantic import BaseModel
 
-from backend.src.business.models.DTOUser import User
+from pydantic import BaseModel
 
 
 class Project(BaseModel):
@@ -19,7 +18,7 @@ class Project(BaseModel):
     def __repr__(self):
         return f"Project['id': {self.id}, 'name': {self.name}, 'description': {self.description}," \
                f" 'start_date': {self.start_date}, 'end_date': {self.end_date}, 'status': {self.status}," \
-               f" 'author': {self.author}, 'users': {self.users}"
+               f" 'author': {self.author}"
 
     def get_json(self):
         return self.json()

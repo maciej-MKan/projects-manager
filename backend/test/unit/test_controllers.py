@@ -13,7 +13,7 @@ def test_index_controller():
     request = DummyRequest()
     controller = ProjectController(request)
     controller.projects_service = projects_service
-    response = controller.all_projects()
+    response = controller.get_all_projects()
     assert response.json == [
         {"id": 1, "name": "Project 1"},
         {"id": 2, "name": "Project 2"},
