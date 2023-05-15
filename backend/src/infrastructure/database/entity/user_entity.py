@@ -1,9 +1,8 @@
-from sqlalchemy import Column, Integer, Table, String, Text, ForeignKey, UniqueConstraint
-from sqlalchemy.orm import relationship, Mapped
+from sqlalchemy import Column, Integer, Table, String, ForeignKey, Text
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, Mapped
 
 Base = declarative_base()
-
 
 association_table = Table(
     "project_users",
@@ -12,6 +11,18 @@ association_table = Table(
     Column("user_id", ForeignKey("users.id"), primary_key=True)
     #     Column("left_id", ForeignKey("left_table.id"), primary_key=True),
 )
+
+
+class ProjectEntity(Base):
+    __tablename__ = 'projects'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False)
+    description = Column(Text)
+    start_date = Column(Integer, nullable=False)
+    end_date = Column(Integer, nullable=False)
+    status = Column(String(50), nullable=False)
+    user_id = Column(Integer)
 
 
 class UserEntity(Base):
@@ -29,5 +40,5 @@ class UserEntity(Base):
     projects: Mapped[list] = relationship(
         "ProjectEntity",
         lazy="joined",
-        secondary=association_table
+        secondary=association_table,
     )

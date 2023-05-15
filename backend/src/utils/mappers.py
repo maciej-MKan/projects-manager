@@ -4,34 +4,8 @@ from backend.src.business.models.DTOComment import Comment
 from backend.src.business.models.DTOProject import Project
 from backend.src.business.models.DTOUser import User
 from backend.src.infrastructure.database.entity.comment_entity import CommentEntity
-from backend.src.infrastructure.database.entity.project_entity import ProjectEntity
+from backend.src.infrastructure.database.entity.user_entity import ProjectEntity
 from backend.src.infrastructure.database.entity.user_entity import UserEntity
-
-
-def user_entity_dto_mapper(entity: UserEntity):
-    return User(
-        id=entity.id,
-        name=entity.first_name,
-        surname=entity.last_name,
-        age=entity.age,
-        gender=entity.gender,
-        email=entity.email,
-        phone_number=entity.phone_number,
-        projects=entity.projects,
-    )
-
-
-def user_dto_entity_mapper(user_data: User):
-    return ProjectEntity(
-        id=user_data.id,
-        name=user_data.name,
-        surname=user_data.surname,
-        age=user_data.age,
-        gender=user_data.gender,
-        email=user_data.email,
-        phone_number=user_data.phone_number,
-        projects=user_data.projects,
-    )
 
 
 def project_entity_dto_mapper(entity: ProjectEntity):
@@ -59,8 +33,37 @@ def project_dto_entity_mapper(project_data: Project):
     )
 
 
-def comment_entity_dto_mapper(entity: CommentEntity):
+def user_entity_dto_mapper(entity: UserEntity) -> User:
     return User(
+        id=entity.id,
+        name=entity.first_name,
+        surname=entity.last_name,
+        age=entity.age,
+        gender=entity.gender,
+        email=entity.email,
+        phone_number=entity.phone_number,
+        projects=[project_entity_dto_mapper(project) for project in entity.projects],
+    )
+
+
+def user_dto_entity_mapper(user_data: User) -> UserEntity:
+    if not user_data.projects:
+        user_data.projects = []
+    return UserEntity(
+        id=user_data.id,
+        first_name=user_data.name,
+        last_name=user_data.surname,
+        password=user_data.password,
+        age=user_data.age,
+        gender=user_data.gender,
+        email=user_data.email,
+        phone_number=user_data.phone_number,
+        projects=[project_dto_entity_mapper(project) for project in user_data.projects],
+    )
+
+
+def comment_entity_dto_mapper(entity: CommentEntity) -> Comment:
+    return Comment(
         id=entity.id,
         project=entity.project_id,
         author=entity.user_id,
@@ -69,8 +72,8 @@ def comment_entity_dto_mapper(entity: CommentEntity):
     )
 
 
-def comment_dto_entity_mapper(comment_data: Comment):
-    return ProjectEntity(
+def comment_dto_entity_mapper(comment_data: Comment) -> CommentEntity:
+    return CommentEntity(
         id=comment_data.id,
         project_id=comment_data.project.id,
         user_id=comment_data.author.id,

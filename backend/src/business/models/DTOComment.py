@@ -15,3 +15,6 @@ class Comment(BaseModel):
 
     class Config:
         orm_mode = True
+
+    def get_json(self):
+        return self.json()

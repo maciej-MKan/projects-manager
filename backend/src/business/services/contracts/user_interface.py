@@ -23,6 +23,3 @@ class Users(ABC):
     def delete_user(self, user_id):
         pass
 
-    @abstractmethod
-    def get_users_by_user_id(self, user_id):
-        pass

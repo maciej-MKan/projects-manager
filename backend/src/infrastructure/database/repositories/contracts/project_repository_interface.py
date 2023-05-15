@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from backend.src.infrastructure.database.entity.project_entity import ProjectEntity
+from backend.src.infrastructure.database.entity.user_entity import ProjectEntity
 
 
 class ProjectsRepository(ABC):
@@ -11,6 +11,10 @@ class ProjectsRepository(ABC):
 
     @abstractmethod
     def get_project_by_id(self, project_id: int):
+        pass
+
+    @abstractmethod
+    def get_project_by_user_id(self, user_id: int):
         pass
 
     @abstractmethod

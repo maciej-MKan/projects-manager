@@ -3,7 +3,7 @@ from unittest import mock
 
 from backend.src.business.models.DTOProject import Project
 from backend.src.business.services.projects_service import ProjectsService
-from backend.src.infrastructure.database.entity.project_entity import ProjectEntity
+from backend.src.infrastructure.database.entity.user_entity import ProjectEntity
 from backend.src.infrastructure.database.repositories.contracts.project_repository_interface import ProjectsRepository
 
 MOCK_PROJECT_1 = ProjectEntity(

@@ -1,15 +1,14 @@
-import os
 from wsgiref.simple_server import make_server
+
 from pyramid.config import Configurator
 
-from backend.src.infrastructure.configuration.application_configuration import get_config
-from backend.src.controllers.rest.project_controller import ProjectController
+from backend.src.infrastructure.configuration.routing_configuration import get_routing
 
 
 def get_app():
+
     with Configurator() as config:
-        config.add_view(get_config().get_all_projects, route_name='projects')
-        config.add_route('projects', '/projects')
+        config.include(get_routing)
         app = config.make_wsgi_app()
 
     return app
