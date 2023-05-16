@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
-from backend.src.infrastructure.database.entity.user_entity import ProjectEntity
+from sqlalchemy.orm import Session
+
+from backend.src.infrastructure.database.entity.entity import ProjectEntity
 
 
 class ProjectsRepository(ABC):
@@ -22,7 +24,7 @@ class ProjectsRepository(ABC):
         pass
 
     @abstractmethod
-    def update_project(self, project_data: ProjectEntity):
+    def update_project(self, project_data: ProjectEntity, external_session: Session):
         pass
 
     @abstractmethod

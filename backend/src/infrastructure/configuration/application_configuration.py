@@ -1,3 +1,4 @@
+from ..database.repositories.relation_management_repository import ManagementRepositoryImpl
 from ...infrastructure.configuration.database_configuration import DataBaseEngine
 
 from ...business.services.projects_service import ProjectsService
@@ -17,21 +18,21 @@ class ApplicationConfiguration:
 
     def __init__(self):
         self._project_repository = ProjectsRepositoryImpl(DataBaseEngine())
+        self._user_repository = UsersRepositoryImpl(DataBaseEngine())
+        self._comment_repository = CommentsRepositoryImpl(DataBaseEngine())
+        self._management_repository = ManagementRepositoryImpl(
+            DataBaseEngine(),
+            self._user_repository,
+            self._project_repository,
+            self._comment_repository
+        )
 
         self._project_service = ProjectsService(self._project_repository)
-
-        self._project_controller = ProjectController(self._project_service)
-
-        self._user_repository = UsersRepositoryImpl(DataBaseEngine())
-
-        self._user_service = UsersService(self._user_repository)
-
-        self._user_controller = UserController(self._user_service)
-
-        self._comment_repository = CommentsRepositoryImpl(DataBaseEngine())
-
+        self._user_service = UsersService(self._user_repository, self._management_repository)
         self._comment_service = CommentsService(self._comment_repository)
 
+        self._project_controller = ProjectController(self._project_service)
+        self._user_controller = UserController(self._user_service)
         self._comment_controller = CommentController(self._comment_service)
 
     def get_project_controller(self):

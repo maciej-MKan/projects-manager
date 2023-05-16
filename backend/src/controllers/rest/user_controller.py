@@ -46,7 +46,7 @@ class UserController:
         projects = [parse_obj_as(Project, project) for project in user.projects]
         user.projects = projects
         update_user_result = self.users_service.update_user(user)
-        response = Response(json=update_user_result)
+        response = Response(json=update_user_result.get_json())
         return response
 
     # def includeme(self, config):

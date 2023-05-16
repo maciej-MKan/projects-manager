@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from backend.src.business.models.DTOUser import User
+
 
 class Users(ABC):
 
@@ -16,7 +18,7 @@ class Users(ABC):
         pass
 
     @abstractmethod
-    def update_user(self, new_user_data):
+    def update_user(self, new_user_data) -> User:
         pass
 
     @abstractmethod

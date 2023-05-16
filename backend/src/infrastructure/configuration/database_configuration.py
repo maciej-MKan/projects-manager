@@ -1,5 +1,6 @@
+import logging
 import os
-import sys
+
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
@@ -14,6 +15,9 @@ DATABASE_URI: str = f"postgresql://{os.environ['DB_USER']}:" \
 
 class DataBaseEngine:
     _base_engine = None
+
+    logging.basicConfig()
+    logging.getLogger('sqlalchemy.engine').setLevel(logging.DEBUG)
 
     def __new__(cls):
         if cls._base_engine is None:

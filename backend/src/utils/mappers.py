@@ -4,8 +4,7 @@ from backend.src.business.models.DTOComment import Comment
 from backend.src.business.models.DTOProject import Project
 from backend.src.business.models.DTOUser import User
 from backend.src.infrastructure.database.entity.comment_entity import CommentEntity
-from backend.src.infrastructure.database.entity.user_entity import ProjectEntity
-from backend.src.infrastructure.database.entity.user_entity import UserEntity
+from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectEntity, ProjectUser
 
 
 def project_entity_dto_mapper(entity: ProjectEntity):
@@ -42,6 +41,7 @@ def user_entity_dto_mapper(entity: UserEntity) -> User:
         gender=entity.gender,
         email=entity.email,
         phone_number=entity.phone_number,
+        # projects=[],
         projects=[project_entity_dto_mapper(project) for project in entity.projects],
     )
 
@@ -49,6 +49,8 @@ def user_entity_dto_mapper(entity: UserEntity) -> User:
 def user_dto_entity_mapper(user_data: User) -> UserEntity:
     if not user_data.projects:
         user_data.projects = []
+    projects_ = [project_dto_entity_mapper(project) for project in user_data.projects]
+    print(projects_[0].__dict__)
     return UserEntity(
         id=user_data.id,
         first_name=user_data.name,
@@ -58,7 +60,7 @@ def user_dto_entity_mapper(user_data: User) -> UserEntity:
         gender=user_data.gender,
         email=user_data.email,
         phone_number=user_data.phone_number,
-        projects=[project_dto_entity_mapper(project) for project in user_data.projects],
+        projects=projects_,
     )
 
 

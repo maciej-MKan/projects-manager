@@ -1,13 +1,16 @@
 from backend.src.business.models import DTOUser
 from backend.src.business.services.contracts.user_interface import Users
+from backend.src.infrastructure.database.repositories.contracts.relation_management_repository_interface import \
+    ManagementRepository
 from backend.src.infrastructure.database.repositories.contracts.user_repository_interface import UsersRepository
 from backend.src.utils.mappers import *
 
 
 class UsersService(Users):
 
-    def __init__(self, user_repository: UsersRepository):
+    def __init__(self, user_repository: UsersRepository, management_repository: ManagementRepository):
         self.user_repository = user_repository
+        self.management_repository = management_repository
 
     def get_all_users(self):
         user_entity = self.user_repository.get_all_users()
@@ -26,8 +29,10 @@ class UsersService(Users):
         user_entity.projects = []
         self.user_repository.add_user(user_entity)
 
-    def update_user(self, new_user_data: DTOUser):
-        return self.user_repository.update_user(user_dto_entity_mapper(new_user_data))
+    def update_user(self, new_user_data: DTOUser) -> User:
+        new_user_entity = user_dto_entity_mapper(new_user_data)
+        result = self.management_repository.update_user_with_projects(new_user_entity)
+        return user_entity_dto_mapper(result)
 
     def delete_user(self, user_id):
         self.user_repository.delete_user(user_id)

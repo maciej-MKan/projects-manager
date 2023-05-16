@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
-from backend.src.infrastructure.database.entity.user_entity import UserEntity
+from sqlalchemy.orm import Session
+
+from backend.src.infrastructure.database.entity.entity import UserEntity
 
 
 class UsersRepository(ABC):
@@ -18,7 +20,7 @@ class UsersRepository(ABC):
         pass
 
     @abstractmethod
-    def update_user(self, user_data: UserEntity):
+    def update_user(self, user_data: UserEntity, external_session: Session):
         pass
 
     @abstractmethod

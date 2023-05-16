@@ -9,7 +9,7 @@ class User(BaseModel):
     id: int = None
     name: str
     surname: str
-    password: str
+    password: str = None
     age: int = None
     gender: str = None
     email: str
@@ -19,9 +19,9 @@ class User(BaseModel):
     class Config:
         orm_mode = True
 
+    def get_json(self):
+        return self.json()
+
 
 class UserCreate(User):
     projects: List[Project]
-
-    def get_json(self):
-        return self.json()
