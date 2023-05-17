@@ -26,3 +26,7 @@ class UsersRepository(ABC):
     @abstractmethod
     def delete_user(self, user_id: int):
         pass
+
+    @abstractmethod
+    def login_user(self, data: dict):
+        pass

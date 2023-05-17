@@ -1,47 +1,49 @@
 from pydantic import parse_obj_as
 from pyramid.response import Response
-from pyramid.view import view_config
+from pyramid.view import view_config, view_defaults
 
 from backend.src.business.models.DTOProject import Project
 from backend.src.business.services.contracts.project_interface import Projects
+from backend.src.infrastructure.configuration.application_configuration import ApplicationConfiguration
 
 
+@view_defaults(is_authenticated=True)
 class ProjectController:
-    def __init__(self, project_service: Projects):
-        self.projects_service = project_service
+    def __init__(self, request):
+        self.request = request
+        self.projects_service: Projects | None = ApplicationConfiguration().get_project_service()
 
-    @view_config(request_method="GET")
-    def get_all_projects(self, request) -> Response:
+    @view_config(route_name='projects', request_method="GET")
+    def get_all_projects(self) -> Response:
         projects = [project.get_json() for project in self.projects_service.get_all_projects()]
         response = Response(json=projects)
         return response
 
-    @view_config(request_method="GET")
-    def get_projects_by_user_id(self, request) -> Response:
-        user_id = request.GET['user_id']
+    @view_config(route_name='projects_from_user', request_method="GET")
+    def get_projects_by_user_id(self) -> Response:
+        user_id = self.request.GET['user_id']
         projects = [project.get_json() for project in self.projects_service.get_projects_by_user_id(user_id)]
         response = Response(json=projects)
         return response
 
-    @view_config(reqest_method="PUT")
-    def update_project(self, request):
-        project_data: dict = request.json_body
+    @view_config(route_name='update_project', request_method="PUT")
+    def update_project(self):
+        project_data: dict = self.request.json_body
         project: Project = parse_obj_as(Project, project_data)
         project_update_result = self.projects_service.update_project(project)
         response = Response(json=project_update_result)
         return response
 
-    @view_config(reqest_method="POST")
-    def add_project(self, request):
-        project_data: dict = request.json_body
-        # user_create = UserCreate(**user_data)
+    @view_config(route_name='create_project', request_method="POST")
+    def add_project(self):
+        project_data: dict = self.request.json_body
         result = self.projects_service.create_new_project(parse_obj_as(Project, project_data))
-        response = Response(json=result)
+        response = Response(json=result.get_json())
         return response
 
-    @view_config(request_method="DELETE")
-    def delete_project_by_id(self, request):
-        project_id = request.GET['project_id']
+    @view_config(route_name='delete_project', request_method="DELETE")
+    def delete_project_by_id(self):
+        project_id = self.request.GET['project_id']
         result: Project = self.projects_service.delete_project(project_id)
         response = Response(json=result.get_json())
         return response

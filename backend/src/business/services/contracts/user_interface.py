@@ -25,3 +25,7 @@ class Users(ABC):
     def delete_user(self, user_id):
         pass
 
+    @abstractmethod
+    def login_user(self, email: str, password:str):
+        pass
+

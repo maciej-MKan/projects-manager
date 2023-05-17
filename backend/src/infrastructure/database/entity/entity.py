@@ -79,6 +79,7 @@ class UserEntity:
                                                              passive_deletes=True,
                                                              post_update=True
                                                              )
+    comments: Mapped[List["CommentEntity"]] = relationship()
 
 
 @mapper_registry.mapped

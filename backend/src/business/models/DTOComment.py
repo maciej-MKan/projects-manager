@@ -8,8 +8,8 @@ from backend.src.business.models.DTOUser import User
 
 class Comment(BaseModel):
     id: int = None
-    project: int
-    author: int
+    project: int = None
+    author: int = None
     description: str
     date: datetime
 

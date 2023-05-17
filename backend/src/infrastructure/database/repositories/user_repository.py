@@ -64,3 +64,12 @@ class UsersRepositoryImpl(UsersRepository):
             session.delete(user)
             session.commit()
         return user
+
+    def login_user(self, data: dict):
+        with Session(self.engine) as session:
+            user = session.query(UserEntity).filter(
+                UserEntity.email == data.get("login")
+            ).filter(
+                UserEntity.password == data.get("password")
+            ).first()
+        return user

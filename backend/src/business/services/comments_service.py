@@ -33,7 +33,8 @@ class CommentsService(Comments):
 
     def create_new_comment(self, comment: DTOComment):
         comment_entity = comment_dto_entity_mapper(comment)
-        return self.comment_repository.add_comment(comment_entity)
+        new_comment = self.comment_repository.add_comment(comment_entity)
+        return comment_entity_dto_mapper(new_comment)
 
     def update_comment(self, new_comment_data: DTOComment):
         comment_entity = comment_dto_entity_mapper(new_comment_data)

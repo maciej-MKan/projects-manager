@@ -38,3 +38,8 @@ class UsersService(Users):
     def delete_user(self, user_id) -> User:
         deleted_user = self.user_repository.delete_user(user_id)
         return user_entity_dto_mapper(deleted_user)
+
+    def login_user(self, email: str, password: str):
+        data = {"login": email, "password": password}
+        return self.user_repository.login_user(data)
+
