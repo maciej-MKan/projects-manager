@@ -41,4 +41,5 @@ class ProjectsService(Projects):
         raise Exception("update error")
 
     def delete_project(self, project_id):
-        return self.project_repository.delete_project(project_id)
+        deleted_project = self.project_repository.delete_project(project_id)
+        return project_entity_dto_mapper(deleted_project)

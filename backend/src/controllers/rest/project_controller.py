@@ -35,15 +35,15 @@ class ProjectController:
     def add_project(self, request):
         project_data: dict = request.json_body
         # user_create = UserCreate(**user_data)
-        self.projects_service.create_new_project(parse_obj_as(Project, project_data))
-        response = Response("ok")
+        result = self.projects_service.create_new_project(parse_obj_as(Project, project_data))
+        response = Response(json=result)
         return response
 
     @view_config(request_method="DELETE", renderer="json")
     def delete_project_by_id(self, request):
         project_id = request.GET['project_id']
-        result = self.projects_service.delete_project(project_id)
-        response = Response(json=result)
+        result: Project = self.projects_service.delete_project(project_id)
+        response = Response(json=result.get_json())
         return response
 
     # def includeme(self, config):

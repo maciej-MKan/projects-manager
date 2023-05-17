@@ -11,11 +11,11 @@ python = "^3.10"
 pyramid = "2.0"
 pyramid-tm = "^2.5"
 pyramid-retry = "^2.1.1"
-psycopg2-binary = "^2.9.6"
 python-dotenv = "^1.0.0"
 pydantic = "^1.10.7"
 dependency-injector = "^4.41.0"
 sqlalchemy = "^2.0.13"
+psycopg2-binary = "^2.9.6"
 
 [tool.poetry.group.dev.dependencies]
 WebTest = "^3.0.0"

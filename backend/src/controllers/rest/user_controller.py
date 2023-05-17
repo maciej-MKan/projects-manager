@@ -26,17 +26,16 @@ class UserController:
             user = self.users_service.get_user_details(user_id)
             response = Response(json=user)
             return response
-        except Exception:
-            raise ArgumentFailure(f"No user {user_id} found")
+        except AttributeError:
+            raise ArgumentFailure(f"No user {user_id} found ")
 
     @view_config(reqest_method="POST", renderer="json")
     def add_user(self, request):
         if request.json_body.get('projects'):
             raise Exception("Can't add user with projects")
         user_data: dict = request.json_body
-        # user_create = UserCreate(**user_data)
-        self.users_service.create_new_user(parse_obj_as(User, user_data))
-        response = Response("ok")
+        result: User = self.users_service.create_new_user(parse_obj_as(User, user_data))
+        response = Response(json=result.get_json())
         return response
 
     @view_config(reqest_method="PUT", renderer="json")
@@ -47,6 +46,13 @@ class UserController:
         user.projects = projects
         update_user_result = self.users_service.update_user(user)
         response = Response(json=update_user_result.get_json())
+        return response
+
+    @view_config(request_method="DELETE", renderer="json")
+    def delete_user_by_id(self, request):
+        user_id = request.GET['user_id']
+        result = self.users_service.delete_user(user_id)
+        response = Response(json=result)
         return response
 
     # def includeme(self, config):

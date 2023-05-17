@@ -15,7 +15,7 @@ class ProjectsRepositoryImpl(ProjectsRepository):
         with Session(self.engine) as session:
             return session.query(ProjectEntity).all()
 
-    def get_project_by_id(self, project_id: int) -> Type[ProjectEntity]:
+    def get_project_by_id(self, project_id: int) -> Type[ProjectEntity] | ProjectEntity:
         with Session(self.engine) as session:
             return session.query(ProjectEntity).filter(ProjectEntity.id == project_id).first()
 
@@ -57,8 +57,9 @@ class ProjectsRepositoryImpl(ProjectsRepository):
 
         return project_data
 
-    def delete_project(self, project_id: int) -> int:
+    def delete_project(self, project_id: int) -> Type[ProjectEntity] | None:
         with Session(self.engine) as session:
-            result = session.query(ProjectEntity).filter(ProjectEntity.id == project_id).delete()
+            project = session.query(ProjectEntity).filter(ProjectEntity.id == project_id).first()
+            session.delete(project)
             session.commit()
-            return result
+        return project

@@ -27,12 +27,14 @@ class UsersService(Users):
     def create_new_user(self, user: DTOUser):
         user_entity = user_dto_entity_mapper(user)
         user_entity.projects = []
-        self.user_repository.add_user(user_entity)
+        new_user = self.user_repository.add_user(user_entity)
+        return user_entity_dto_mapper(new_user)
 
     def update_user(self, new_user_data: DTOUser) -> User:
         new_user_entity = user_dto_entity_mapper(new_user_data)
         result = self.management_repository.update_user_with_projects(new_user_entity)
         return user_entity_dto_mapper(result)
 
-    def delete_user(self, user_id):
-        self.user_repository.delete_user(user_id)
+    def delete_user(self, user_id) -> User:
+        deleted_user = self.user_repository.delete_user(user_id)
+        return user_entity_dto_mapper(deleted_user)

@@ -50,7 +50,6 @@ def user_dto_entity_mapper(user_data: User) -> UserEntity:
     if not user_data.projects:
         user_data.projects = []
     projects_ = [project_dto_entity_mapper(project) for project in user_data.projects]
-    print(projects_[0].__dict__)
     return UserEntity(
         id=user_data.id,
         first_name=user_data.name,

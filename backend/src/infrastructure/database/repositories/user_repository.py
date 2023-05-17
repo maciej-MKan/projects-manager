@@ -2,6 +2,8 @@ from typing import List, Type
 
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
+from sqlalchemy.event import listen
+from sqlalchemy.pool import Pool
 
 from backend.src.infrastructure.database.entity.entity import UserEntity
 from backend.src.infrastructure.database.repositories.contracts.user_repository_interface import UsersRepository
@@ -24,6 +26,7 @@ class UsersRepositoryImpl(UsersRepository):
             session.add(user)
             session.commit()
             session.refresh(user)
+            print("user ", user)
             return user
 
     def update_user(self, user_data: UserEntity, session: Session = None) -> Type[UserEntity] | UserEntity:
@@ -55,7 +58,9 @@ class UsersRepositoryImpl(UsersRepository):
 
         return user_data
 
-    def delete_user(self, user_id: int) -> None:
+    def delete_user(self, user_id: int) -> Type[UserEntity] | None:
         with Session(self.engine) as session:
-            session.query(UserEntity).filter(UserEntity.id == user_id).delete()
+            user = session.query(UserEntity).filter(UserEntity.id == user_id).first()
+            session.delete(user)
             session.commit()
+        return user
