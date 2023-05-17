@@ -34,7 +34,6 @@ class ProjectsService(Projects):
 
     def update_project(self, new_project_data: DTOProject):
         project_entity = project_dto_entity_mapper(new_project_data)
-        print(project_entity)
         new_project = self.project_repository.update_project(project_entity)
         if new_project:
             return project_entity_dto_mapper(new_project).get_json()

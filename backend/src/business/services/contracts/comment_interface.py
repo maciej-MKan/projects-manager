@@ -22,3 +22,7 @@ class Comments(ABC):
     @abstractmethod
     def delete_comment(self, comment_id):
         pass
+
+    @abstractmethod
+    def get_comments_by_user_id(self, user_id):
+        pass

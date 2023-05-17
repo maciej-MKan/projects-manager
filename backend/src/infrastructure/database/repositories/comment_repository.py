@@ -1,9 +1,9 @@
-from typing import List
+from typing import List, Type
 
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
-from backend.src.infrastructure.database.entity.comment_entity import CommentEntity
+from backend.src.infrastructure.database.entity.entity import CommentEntity
 from backend.src.infrastructure.database.repositories.contracts.comment_repository_interface import CommentsRepository
 
 
@@ -11,13 +11,17 @@ class CommentsRepositoryImpl(CommentsRepository):
     def __init__(self, engine: Engine):
         self.engine = engine
 
-    def get_all_comments(self) -> List[CommentEntity]:
+    def get_all_comments(self) -> List[Type[CommentEntity]]:
         with Session(self.engine) as session:
             return session.query(CommentEntity).all()
 
-    def get_comment_by_id(self, comment_id: int) -> CommentEntity:
+    def get_comment_by_id(self, comment_id: int) -> Type[CommentEntity] | None:
         with Session(self.engine) as session:
             return session.query(CommentEntity).filter(CommentEntity.id == comment_id).first()
+
+    def get_comment_by_user_id(self, user_id) -> List[Type[CommentEntity]] | None:
+        with Session(self.engine) as session:
+            return session.query(CommentEntity).filter(CommentEntity.user_id == user_id).all()
 
     def add_comment(self, comment_data: CommentEntity) -> CommentEntity:
         with Session(self.engine) as session:
@@ -26,20 +30,21 @@ class CommentsRepositoryImpl(CommentsRepository):
             session.refresh(comment_data)
             return comment_data
 
-    def update_comment(self, comment_data: CommentEntity) -> CommentEntity:
+    def update_comment(self, comment_data: CommentEntity) -> Type[CommentEntity] | None:
         with Session(self.engine) as session:
             session.query(CommentEntity).filter(CommentEntity.id == comment_data.id).update({
-                CommentEntity.name: comment_data.name,
-                CommentEntity.description: comment_data.description,
-                CommentEntity.start_date: comment_data.start_date,
-                CommentEntity.end_date: comment_data.end_date,
-                CommentEntity.status: comment_data.status,
-            })
+                CommentEntity.project_id: comment_data.project_id,
+                CommentEntity.user_id: comment_data.user_id,
+                CommentEntity.comment: comment_data.comment,
+                CommentEntity.timestamp: comment_data.timestamp,
+            }, synchronize_session="fetch")
             session.commit()
-            session.refresh(comment_data)
-            return comment_data
+            updated: Type[CommentEntity] = self.get_comment_by_id(comment_data.id)
+            return updated
 
     def delete_comment(self, comment_id: int) -> None:
         with Session(self.engine) as session:
-            session.query(CommentEntity).filter(CommentEntity.id == comment_id).delete()
+            comment = session.query(CommentEntity).filter(CommentEntity.id == comment_id).first()
+            session.delete(comment)
             session.commit()
+        return comment

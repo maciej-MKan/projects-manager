@@ -53,6 +53,7 @@ class ProjectEntity:
                                                           passive_deletes=True,
                                                           post_update=True
                                                           )
+    comments: Mapped[List["CommentEntity"]] = relationship()
 
 
 @mapper_registry.mapped
@@ -78,3 +79,14 @@ class UserEntity:
                                                              passive_deletes=True,
                                                              post_update=True
                                                              )
+
+
+@mapper_registry.mapped
+class CommentEntity:
+    __tablename__ = 'project_comments'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete="CASCADE"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    comment: Mapped[str] = mapped_column(nullable=False)
+    timestamp: Mapped[int] = mapped_column(nullable=False)

@@ -10,20 +10,20 @@ class ProjectController:
     def __init__(self, project_service: Projects):
         self.projects_service = project_service
 
-    @view_config(request_method="GET", renderer="json")
+    @view_config(request_method="GET")
     def get_all_projects(self, request) -> Response:
         projects = [project.get_json() for project in self.projects_service.get_all_projects()]
         response = Response(json=projects)
         return response
 
-    @view_config(request_method="GET", renderer="json")
+    @view_config(request_method="GET")
     def get_projects_by_user_id(self, request) -> Response:
         user_id = request.GET['user_id']
         projects = [project.get_json() for project in self.projects_service.get_projects_by_user_id(user_id)]
         response = Response(json=projects)
         return response
 
-    @view_config(reqest_method="PUT", renderer="json")
+    @view_config(reqest_method="PUT")
     def update_project(self, request):
         project_data: dict = request.json_body
         project: Project = parse_obj_as(Project, project_data)
@@ -31,7 +31,7 @@ class ProjectController:
         response = Response(json=project_update_result)
         return response
 
-    @view_config(reqest_method="POST", renderer="json")
+    @view_config(reqest_method="POST")
     def add_project(self, request):
         project_data: dict = request.json_body
         # user_create = UserCreate(**user_data)
@@ -39,7 +39,7 @@ class ProjectController:
         response = Response(json=result)
         return response
 
-    @view_config(request_method="DELETE", renderer="json")
+    @view_config(request_method="DELETE")
     def delete_project_by_id(self, request):
         project_id = request.GET['project_id']
         result: Project = self.projects_service.delete_project(project_id)

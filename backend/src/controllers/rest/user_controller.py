@@ -12,13 +12,13 @@ class UserController:
     def __init__(self, user_service: Users):
         self.users_service = user_service
 
-    @view_config(request_method="GET", renderer="json")
+    @view_config(request_method="GET")
     def get_all_users(self, request) -> Response:
         users = [user.get_json() for user in self.users_service.get_all_users()]
         response = Response(json=users)
         return response
 
-    @view_config(request_method="GET", renderer="json")
+    @view_config(request_method="GET")
     def get_user(self, request) -> Response:
         user_id = None
         try:
@@ -29,7 +29,7 @@ class UserController:
         except AttributeError:
             raise ArgumentFailure(f"No user {user_id} found ")
 
-    @view_config(reqest_method="POST", renderer="json")
+    @view_config(reqest_method="POST")
     def add_user(self, request):
         if request.json_body.get('projects'):
             raise Exception("Can't add user with projects")
@@ -38,7 +38,7 @@ class UserController:
         response = Response(json=result.get_json())
         return response
 
-    @view_config(reqest_method="PUT", renderer="json")
+    @view_config(reqest_method="PUT")
     def update_user(self, request):
         user_data: dict = request.json_body
         user: User = parse_obj_as(User, user_data)
@@ -48,7 +48,7 @@ class UserController:
         response = Response(json=update_user_result.get_json())
         return response
 
-    @view_config(request_method="DELETE", renderer="json")
+    @view_config(request_method="DELETE")
     def delete_user_by_id(self, request):
         user_id = request.GET['user_id']
         result = self.users_service.delete_user(user_id)

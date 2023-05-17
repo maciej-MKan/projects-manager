@@ -3,8 +3,7 @@ from datetime import datetime
 from backend.src.business.models.DTOComment import Comment
 from backend.src.business.models.DTOProject import Project
 from backend.src.business.models.DTOUser import User
-from backend.src.infrastructure.database.entity.comment_entity import CommentEntity
-from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectEntity, ProjectUser
+from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectEntity, CommentEntity
 
 
 def project_entity_dto_mapper(entity: ProjectEntity):
@@ -76,8 +75,8 @@ def comment_entity_dto_mapper(entity: CommentEntity) -> Comment:
 def comment_dto_entity_mapper(comment_data: Comment) -> CommentEntity:
     return CommentEntity(
         id=comment_data.id,
-        project_id=comment_data.project.id,
-        user_id=comment_data.author.id,
+        project_id=comment_data.project,
+        user_id=comment_data.author,
         comment=comment_data.description,
         timestamp=int(comment_data.date.timestamp()),
     )

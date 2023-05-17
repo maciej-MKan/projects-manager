@@ -10,7 +10,7 @@ class ArgumentFailure(Exception):
     pass
 
 
-@exception_view_config(context=ValidationFailure, renderer="json")
+@exception_view_config(context=ValidationFailure)
 def failed_validation(exc, request):
     msg = exc.args[0] if exc.args else ""
     response = Response(json={'error': {'Failed validation': msg}})
