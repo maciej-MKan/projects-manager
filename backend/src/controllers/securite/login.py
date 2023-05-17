@@ -1,0 +1,29 @@
+from pyramid.csrf import new_csrf_token
+from pyramid.response import Response
+from pyramid.security import remember
+from pyramid.view import view_config, view_defaults
+
+from backend.src.infrastructure.securite.authenticate import authenticate
+
+
+@view_defaults()
+class LoginView:
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(route_name='login', request_method='POST')
+    def login(self):
+
+        login = self.request.POST['login']
+        password = self.request.POST['password']
+        user = authenticate(login, password)
+        if user:
+            new_csrf_token(self.request)
+            headers = remember(self.request, userid=user)
+            response = Response(json={'result': 'ok'}, headerlist=headers)
+            return response
+
+        response = Response(json={'result': 'ng'})
+        return response
+

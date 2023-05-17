@@ -1,9 +1,9 @@
-# from pyramid.config import Configurator
-#
+from pyramid.config import Configurator
+
 # import os
 # from dotenv import load_dotenv
 #
-# load_dotenv('.env/dev/db.env')
+# load_dotenv('.env/test/db.env')
 #
 #
 # def main(global_config, **settings):
