@@ -48,7 +48,6 @@ class UsersRepositoryImpl(UsersRepository):
             {
                 UserEntity.first_name: user_data.first_name,
                 UserEntity.last_name: user_data.last_name,
-                UserEntity.password: user_data.password,
                 UserEntity.age: user_data.age,
                 UserEntity.gender: user_data.gender,
                 UserEntity.email: user_data.email,

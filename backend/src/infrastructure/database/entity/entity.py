@@ -46,12 +46,14 @@ class ProjectEntity:
                                                      back_populates="projects",
                                                      passive_deletes=True,
                                                      post_update=True,
-                                                     lazy="subquery"
+                                                     lazy="subquery",
+                                                     overlaps="user_list,project_list"
                                                      )
 
     user_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="project_list",
                                                           passive_deletes=True,
-                                                          post_update=True
+                                                          post_update=True,
+                                                          overlaps="users"
                                                           )
     comments: Mapped[List["CommentEntity"]] = relationship()
 
@@ -72,12 +74,14 @@ class UserEntity:
                                                            back_populates="users",
                                                            passive_deletes=True,
                                                            post_update=True,
-                                                           lazy="subquery"
+                                                           lazy="subquery",
+                                                           overlaps="project_list,user_asoc,user_list"
                                                            )
 
     project_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="user_list",
                                                              passive_deletes=True,
-                                                             post_update=True
+                                                             post_update=True,
+                                                             overlaps="projects,users"
                                                              )
     comments: Mapped[List["CommentEntity"]] = relationship()
 

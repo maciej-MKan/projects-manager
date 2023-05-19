@@ -18,6 +18,7 @@ class ProjectsService(Projects):
 
     def get_all_projects(self):
         project_entity = self.project_repository.get_all_projects()
+        print("getting all projects")
         return map_projects_list(project_entity)
 
     def get_projects_by_user_id(self, user_id):
@@ -30,7 +31,8 @@ class ProjectsService(Projects):
     def create_new_project(self, project: DTOProject):
         project.status = "NEW"
         project_entity = project_dto_entity_mapper(project)
-        return self.project_repository.add_project(project_entity)
+        new_project_entity = self.project_repository.add_project(project_entity)
+        return project_entity_dto_mapper(new_project_entity)
 
     def update_project(self, new_project_data: DTOProject):
         project_entity = project_dto_entity_mapper(new_project_data)

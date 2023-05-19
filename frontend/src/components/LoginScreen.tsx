@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-const LoginScreen: React.FC = () => {
+interface LoginScreenProps {
+  onLogin: () => void;
+}
+
+const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
@@ -9,15 +13,22 @@ const LoginScreen: React.FC = () => {
       const response = await fetch('http://localhost:8000/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          "Content-Type": "application/x-www-form-urlencoded"
         },
+        credentials: 'include',
+        mode: 'cors',
         body: `login=${login}&password=${password}`
       });
 
       // Obsłuż odpowiedź z serwera
       if (response.ok) {
-        // Pomyślnie zalogowano, wykonaj odpowiednie akcje
+        const user_id = await response.json();
+        console.log(user_id.result);
+        localStorage.setItem('User_ID', user_id.result);
+        onLogin(); // Wywołaj funkcję onLogin po pomyślnym zalogowaniu
       } else {
+        console.log("bad login");
+
         // Wystąpił błąd podczas logowania, obsłuż go
       }
     } catch (error) {

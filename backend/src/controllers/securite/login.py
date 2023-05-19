@@ -20,8 +20,8 @@ class LoginView:
         user = authenticate(login, password)
         if user:
             new_csrf_token(self.request)
-            headers = remember(self.request, userid=user)
-            response = Response(json={'result': 'ok'}, headerlist=headers)
+            headers = remember(self.request, userid=user.id, max_age=36000)
+            response = Response(json={'result': user.id}, headerlist=headers)
             return response
 
         response = Response(json={'result': 'ng'})

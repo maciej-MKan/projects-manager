@@ -16,7 +16,8 @@ class ProjectController:
     @view_config(route_name='projects', request_method="GET")
     def get_all_projects(self) -> Response:
         projects = [project.get_json() for project in self.projects_service.get_all_projects()]
-        response = Response(json=projects)
+        response = Response(json=projects, status=200)
+        print(response)
         return response
 
     @view_config(route_name='projects_from_user', request_method="GET")
