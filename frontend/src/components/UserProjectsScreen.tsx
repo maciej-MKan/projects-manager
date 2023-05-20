@@ -18,6 +18,15 @@ const ProjectsScreen: React.FC = () => {
             <td>{format(new Date(project.end_date), 'yyyy-MM-dd')}</td>
             <td>{project.status}</td>
             <td>{project.author}</td>
+            <td>
+                <select onChange={(e) => handleProjectActions(e.target.value)}>
+                <option value="">Wybierz akcję</option>
+                <option value="edit">Edycja</option>
+                <option value="comment">Dodaj komentarz</option>
+                <option value="details">Szczegóły projektu</option>
+                <option value="delete">Usuń</option>
+              </select>
+            </td>
           </tr>
         ));
       }
@@ -66,6 +75,14 @@ const ProjectsScreen: React.FC = () => {
     const handleEditProfile = () => {
         navigate('/edit-profile', {state: userData});}
 
+    const handleAddProject = () => {
+        navigate('/add-project')
+    }
+
+    const handleProjectActions = (target) => {
+        console.log(target)
+    }
+
     return (
         <div>
             {userData && (
@@ -74,6 +91,9 @@ const ProjectsScreen: React.FC = () => {
                 </div>
                  )}
           <h1>Projects:</h1>
+          <div>
+            <button onClick={handleAddProject}>Add new project</button>
+          </div>
           <table>
             <thead>
               <tr>
@@ -84,6 +104,7 @@ const ProjectsScreen: React.FC = () => {
                 <th>End Date</th>
                 <th>Status</th>
                 <th>Author</th>
+                <th>Options</th>
               </tr>
             </thead>
             <tbody>

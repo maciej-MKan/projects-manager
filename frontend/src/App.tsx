@@ -4,6 +4,7 @@ import ProjectsScreen from './components/ProjectScreen.tsx';
 import LoginScreen from './components/LoginScreen.tsx';
 import UserEditScreen from './components/UserEditScreen.tsx';
 import UserProjectsScreen from './components/UserProjectsScreen.tsx';
+import CreateProjectScreen from './components/ProjectCreateScreen.tsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,7 +31,7 @@ function App() {
           <Route path="/" element={isLoggedIn ? <UserProjectsScreen /> : <LoginScreen onLogin={handleLogin} />}/>
           <Route path="/edit-profile" element={isLoggedIn ? <UserEditScreen /> : <LoginScreen onLogin={handleLogin} />} />
           <Route path='/project-details' element={isLoggedIn ? <div /> : <LoginScreen onLogin={handleLogin} />} />
-          <Route path='/project-create' element={isLoggedIn ? <div /> : <LoginScreen onLogin={handleLogin} />} />
+          <Route path='/add-project' element={isLoggedIn ? <CreateProjectScreen /> : <LoginScreen onLogin={handleLogin} />} />
         </Routes>
     </Router>
   );

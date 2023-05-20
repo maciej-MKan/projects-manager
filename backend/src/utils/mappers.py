@@ -14,7 +14,8 @@ def project_entity_dto_mapper(entity: ProjectEntity):
         start_date=datetime.fromtimestamp(entity.start_date),
         end_date=datetime.fromtimestamp(entity.end_date),
         status=entity.status,
-        author=entity.user_id
+        author=entity.user_id,
+        # users=[user_entity_dto_mapper(user) for user in entity.users]
     )
 
 
@@ -27,7 +28,7 @@ def project_dto_entity_mapper(project_data: Project):
         end_date=int(project_data.end_date.timestamp()),
         status=project_data.status,
         user_id=project_data.author,
-        # users=project_data.users,
+        # users=[user_dto_entity_mapper(user) for user in project_data.users],
     )
 
 

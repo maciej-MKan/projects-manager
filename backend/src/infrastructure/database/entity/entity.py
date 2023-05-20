@@ -22,11 +22,13 @@ class ProjectUser:
     user_list: Mapped["UserEntity"] = relationship(
         back_populates="project_asoc",
         passive_deletes="all",
+        lazy="subquery",
         post_update=True
     )
     project_list: Mapped["ProjectEntity"] = relationship(
         back_populates="user_asoc",
         passive_deletes="all",
+        lazy="subquery",
         post_update=True
     )
 
@@ -47,12 +49,13 @@ class ProjectEntity:
                                                      passive_deletes=True,
                                                      post_update=True,
                                                      lazy="subquery",
-                                                     overlaps="user_list,project_list"
+                                                     overlaps="user_list,project_list, project_asoc"
                                                      )
 
     user_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="project_list",
                                                           passive_deletes=True,
                                                           post_update=True,
+                                                          lazy="subquery",
                                                           overlaps="users"
                                                           )
     comments: Mapped[List["CommentEntity"]] = relationship()
@@ -81,6 +84,7 @@ class UserEntity:
     project_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="user_list",
                                                              passive_deletes=True,
                                                              post_update=True,
+                                                             lazy="subquery",
                                                              overlaps="projects,users"
                                                              )
     comments: Mapped[List["CommentEntity"]] = relationship()

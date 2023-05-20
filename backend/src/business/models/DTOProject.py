@@ -11,6 +11,7 @@ class Project(BaseModel):
     end_date: datetime
     status: str
     author: int
+    # users: list
 
     class Config:
         orm_mode = True

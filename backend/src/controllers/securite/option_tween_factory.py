@@ -8,6 +8,7 @@ def simple_tween_factory(handler, registry):
             response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
             response.headers['Access-Control-Allow-Credentials'] = 'true'
             response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
+            response.headers['Access-Control-Allow-Headers'] = '*'
             return response
 
         return handler(request)
