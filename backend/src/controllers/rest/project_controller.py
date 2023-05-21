@@ -3,6 +3,7 @@ from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
 
 from backend.src.business.models.DTOProject import Project
+from backend.src.business.models.DTOUser import User
 from backend.src.business.services.contracts.project_interface import Projects
 from backend.src.infrastructure.configuration.application_configuration import ApplicationConfiguration
 
@@ -27,10 +28,19 @@ class ProjectController:
         response = Response(json=projects)
         return response
 
+    @view_config(route_name='project_by_id', request_method="GET")
+    def get_project_by_id(self) -> Response:
+        project_id = self.request.GET['project_id']
+        project = self.projects_service.get_project_details(project_id)
+        response = Response(json=project.get_json())
+        return response
+
     @view_config(route_name='update_project', request_method="PUT")
     def update_project(self):
         project_data: dict = self.request.json_body
         project: Project = parse_obj_as(Project, project_data)
+        users = [parse_obj_as(User, user) for user in project.users]
+        project.users = users
         project_update_result = self.projects_service.update_project(project)
         response = Response(json=project_update_result)
         return response

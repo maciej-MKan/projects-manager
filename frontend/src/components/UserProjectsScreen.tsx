@@ -6,6 +6,15 @@ const ProjectsScreen: React.FC = () => {
     const [projects, setProjects] = useState([]);
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const enptyProject = {
+        name: '',
+        description: '',
+        start_date: '',
+        end_date: '',
+        author: localStorage.getItem('User_ID'),
+        status: 'new',
+        users: [],
+      };
   
 
     function renderProjects(projects) {
@@ -19,7 +28,7 @@ const ProjectsScreen: React.FC = () => {
             <td>{project.status}</td>
             <td>{project.author}</td>
             <td>
-                <select onChange={(e) => handleProjectActions(e.target.value)}>
+                <select onChange={(e) => handleProjectActions(e.target.value, project)}>
                 <option value="">Wybierz akcję</option>
                 <option value="edit">Edycja</option>
                 <option value="comment">Dodaj komentarz</option>
@@ -49,11 +58,7 @@ const ProjectsScreen: React.FC = () => {
             if (response.ok) {
                 const userDataRaw = await response.json();
                 const parseUser = JSON.parse(userDataRaw)
-                console.log(parseUser)
                 setUserData(parseUser);
-                const projectsData = parseUser.projects
-                console.log(projectsData)
-                setProjects(projectsData);
             } else {
             console.log("bad data");
             localStorage.setItem('User_ID', 'null');
@@ -68,7 +73,38 @@ const ProjectsScreen: React.FC = () => {
         }
         };
 
+        const fetchProjects = async () => {
+            try {
+                const user_id = localStorage.getItem('User_ID');
+                const response = await fetch(`http://localhost:8000/user/self_projects?user_id=${user_id}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    credentials: 'include',
+                    mode: 'cors',
+                });
+                console.log(response)
+                if (response.ok) {
+                    const projectsData = await response.json();
+                    const parsedProjects = projectsData.map((project) => JSON.parse(project));
+                    setProjects(parsedProjects);
+                } else {
+                    console.log("bad data")
+                    localStorage.setItem('User_ID', 'null');
+                    redirect('/')
+                    // Wystąpił błąd podczas pobierania danych, obsłuż go
+                }
+            } catch (error) {
+                console.log("error")
+                localStorage.setItem('User_ID', 'null');
+                navigate('/')
+                // Wystąpił błąd połączenia lub inny błąd, obsłuż go
+            }
+        };
+
         fetchUserData();
+        fetchProjects()
 
     }, []);
 
@@ -76,12 +112,24 @@ const ProjectsScreen: React.FC = () => {
         navigate('/edit-profile', {state: userData});}
 
     const handleAddProject = () => {
-        navigate('/add-project')
+        navigate('/project', {state: enptyProject})
     }
 
-    const handleProjectActions = (target) => {
-        console.log(target)
-    }
+    const handleProjectActions = (target, project) => {
+        switch (target) {
+            case 'edit':
+                navigate('/project', {state: project})
+                break;
+            case 'comment':
+                console.log("comment.");
+                break;
+            case 'details':
+                console.log("details.");
+                break;
+            case 'delete':
+                console.log('delete')
+        };
+    };
 
     return (
         <div>

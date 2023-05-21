@@ -9,3 +9,7 @@ class ManagementRepository(ABC):
     def update_user_with_projects(self, user_data: UserEntity):
         pass
 
+    @abstractmethod
+    def update_project_with_users(self, user_data: UserEntity):
+        pass
+

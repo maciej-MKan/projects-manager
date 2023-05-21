@@ -1,6 +1,8 @@
 from backend.src.business.models import DTOProject
 from backend.src.business.services.contracts.project_interface import Projects
 from backend.src.infrastructure.database.repositories.contracts.project_repository_interface import ProjectsRepository
+from backend.src.infrastructure.database.repositories.contracts.relation_management_repository_interface import \
+    ManagementRepository
 from backend.src.utils.mappers import *
 
 
@@ -13,8 +15,9 @@ def map_projects_list(project_entity):
 
 
 class ProjectsService(Projects):
-    def __init__(self, project_repository: ProjectsRepository):
+    def __init__(self, project_repository: ProjectsRepository, management_repository: ManagementRepository):
         self.project_repository = project_repository
+        self.management_repository = management_repository
 
     def get_all_projects(self):
         project_entity = self.project_repository.get_all_projects()
@@ -36,7 +39,7 @@ class ProjectsService(Projects):
 
     def update_project(self, new_project_data: DTOProject):
         project_entity = project_dto_entity_mapper(new_project_data)
-        new_project = self.project_repository.update_project(project_entity)
+        new_project = self.management_repository.update_project_with_users(project_entity)
         if new_project:
             return project_entity_dto_mapper(new_project).get_json()
         raise Exception("update error")

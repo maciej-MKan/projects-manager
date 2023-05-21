@@ -15,6 +15,7 @@ def get_routing(config: Configurator):
 
     config.add_renderer("json", json_renderer)
     config.add_route('projects', '/projects')
+    config.add_route('project_by_id', '/project')
     config.add_route('create_project', '/project/new')
     config.add_route('update_project', '/project/update')
     config.add_route('delete_project', '/project/delete')

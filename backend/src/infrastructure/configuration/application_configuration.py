@@ -25,7 +25,7 @@ class ApplicationConfiguration:
             self._comment_repository
         )
 
-        self._project_service = ProjectsService(self._project_repository)
+        self._project_service = ProjectsService(self._project_repository, self._management_repository)
         self._user_service = UsersService(self._user_repository, self._management_repository)
         self._comment_service = CommentsService(self._comment_repository)
 

@@ -3,7 +3,7 @@ from typing import Type
 from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 
-from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectUser
+from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectUser, ProjectEntity
 from backend.src.infrastructure.database.repositories.contracts.comment_repository_interface import CommentsRepository
 from backend.src.infrastructure.database.repositories.contracts.project_repository_interface import ProjectsRepository
 from backend.src.infrastructure.database.repositories.contracts.relation_management_repository_interface import \
@@ -44,5 +44,28 @@ class ManagementRepositoryImpl(ManagementRepository):
             session.commit()
 
         updated: Type[UserEntity] = self.user_repo.get_user_by_id(user_data.id)
+
+        return updated
+
+    def update_project_with_users(self, project_data: ProjectEntity) -> Type[ProjectEntity]:
+        with Session(self.engine) as session:
+            self.project_repo.update_project(project_data, session)
+            status = 0
+            for user in project_data.users:
+                updated_project = self.user_repo.update_user(user, session)
+                if updated_project == user:
+                    status += 1
+            if not status == len(project_data.users):
+                raise Exception(f"update error, correct {status} updated")
+
+            session.query(ProjectUser).filter(ProjectUser.project_id == project_data.id).delete()
+            for user in project_data.users:
+                print("+++++++", user.id, project_data.id, project_data.users)
+                project_user = ProjectUser(user_id=user.id, project_id=project_data.id)
+                session.merge(project_user)
+
+            session.commit()
+
+        updated: Type[ProjectEntity] = self.project_repo.get_project_by_id(project_data.id)
 
         return updated
