@@ -11,6 +11,7 @@ interface FormDataValue {
   firstName: string;
   lastName: string;
   password: string;
+  hashPassword: string;
   age: string;
   gender: string;
   email: string;
@@ -20,7 +21,6 @@ interface FormDataValue {
 const ConfirmEdit: React.FC<ConfirmScreenProps> = ({ onCancel, onBack, onConfirm, formDataValue }) => {
 
   const handleConfirm = () => {
-    // Wykonanie operacji i przeniesienie na poprzedni ekran
     onConfirm();
   };
 

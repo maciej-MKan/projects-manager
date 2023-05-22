@@ -48,8 +48,6 @@ class UserController:
     def update_user(self):
         user_data: dict = self.request.json_body
         user: User = parse_obj_as(User, user_data)
-        projects = [parse_obj_as(Project, project) for project in user.projects]
-        user.projects = projects
         update_user_result = self.users_service.update_user(user)
         response = Response(json=update_user_result.get_json())
         return response

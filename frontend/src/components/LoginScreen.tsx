@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { SHA256 } from 'crypto-js';
+ 
 interface LoginScreenProps {
   onLogin: () => void;
 }
@@ -11,7 +12,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const navigate = useNavigate();
 
 
+
   const handleLogin = async () => {
+    const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
     try {
       const response = await fetch(`${backendUrl}/login`, {
         method: 'POST',
@@ -20,7 +23,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         },
         credentials: 'include',
         mode: 'cors',
-        body: `login=${login}&password=${password}`
+        body: `login=${login}&password=${SHA256(password).toString()}`
       });
 
       // Obsłuż odpowiedź z serwera
@@ -28,14 +31,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         const user_id = await response.json();
         console.log(user_id.result);
         localStorage.setItem('User_ID', user_id.result);
-        onLogin(); // Wywołaj funkcję onLogin po pomyślnym zalogowaniu
+        onLogin(); 
       } else {
         console.log("bad login");
 
-        // Wystąpił błąd podczas logowania, obsłuż go
       }
     } catch (error) {
-      // Wystąpił błąd połączenia lub inny błąd, obsłuż go
+      console.log(error)
     }
 
     onLogin();

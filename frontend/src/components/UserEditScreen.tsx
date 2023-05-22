@@ -6,22 +6,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const UpdateUserData = (data, state) => {
     if (!data.password || data.password == '**********' || data.password.lenght < 3){
-        data.password = '';
+        data.hashPassword = '';
     };
-    console.log(data.password)
-    console.log(state.password)
-    console.log(state.projects)
     const mappedData = {
       id: localStorage.getItem('User_ID'),
       name: data.firstName,
       surname: data.lastName,
-      password: data.password,
+      password: data.hashPassword,
       age: data.age,
       gender: data.gender,
       email: data.email,
       phone_number: data.phone,
       projects: state.projects,
     };
+    const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+
   
     fetch(`${backendUrl}/user/update`, {
       method: 'PUT',

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { SHA256 } from 'crypto-js';
 
 interface EditFormProps {
     onCancel: () => void;
@@ -10,6 +11,7 @@ interface EditFormProps {
     firstName: string;
     lastName: string;
     password: string;
+    hashPassword: string;
     age: string;
     gender: string;
     email: string;
@@ -24,15 +26,15 @@ const EditForm: React.FC<EditFormProps> = ({ onCancel, onNext, tmpData }) => {
     const [gender, setGender] = useState(tmpData.gender);
     const [email, setEmail] = useState(tmpData.email);
     const [phone, setPhone] = useState(tmpData.phone);
-    const [maskedPassword, setMaskedPassword] = useState('');
+    const [hashPassword, sethashPassword] = useState('');
 
 
   const handleNext = () => {
-    // Walidacja danych i przeniesienie do ekranu potwierdzenia
     onNext({
       firstName,
       lastName,
       password,
+      hashPassword,
       age,
       gender,
       email,
@@ -40,12 +42,17 @@ const EditForm: React.FC<EditFormProps> = ({ onCancel, onNext, tmpData }) => {
     });
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMaskedPassword(password.replace(/./g, '*'));
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [password]);
+  const encryptPassword = (password) => {
+    setPassword(password);
+    sethashPassword(SHA256(password).toString())
+  }
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setMaskedPassword(password.replace(/./g, '*'));
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [password]);
 
   return (
     <div className="container mt-4">
@@ -72,7 +79,7 @@ const EditForm: React.FC<EditFormProps> = ({ onCancel, onNext, tmpData }) => {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => encryptPassword(e.target.value)}
           />
         </div>
         <div className="mb-3">
