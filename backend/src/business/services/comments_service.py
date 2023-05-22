@@ -48,5 +48,5 @@ class CommentsService(Comments):
         raise Exception("update error")
 
     def delete_comment(self, comment_id):
-        deleted_comment = self.comment_repository.delete_comment(comment_id)
-        return comment_entity_dto_mapper(deleted_comment)
+        result = self.comment_repository.delete_comment(comment_id)
+        return result

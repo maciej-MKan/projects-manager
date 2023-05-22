@@ -1,3 +1,5 @@
+import json
+
 from pydantic import parse_obj_as
 from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
@@ -58,8 +60,8 @@ class ProjectController:
     @view_config(route_name='delete_project', request_method="DELETE")
     def delete_project_by_id(self):
         project_id = self.request.GET['project_id']
-        result: Project = self.projects_service.delete_project(project_id)
-        response = Response(json=result.get_json())
+        result = self.projects_service.delete_project(project_id)
+        response = Response(json=json.dumps(result))
         return response
 
     # def includeme(self, config):

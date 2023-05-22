@@ -2,8 +2,6 @@ from typing import List, Type
 
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
-from sqlalchemy.event import listen
-from sqlalchemy.pool import Pool
 
 from backend.src.infrastructure.database.entity.entity import UserEntity
 from backend.src.infrastructure.database.repositories.contracts.user_repository_interface import UsersRepository
@@ -62,7 +60,7 @@ class UsersRepositoryImpl(UsersRepository):
             user = session.query(UserEntity).filter(UserEntity.id == user_id).first()
             session.delete(user)
             session.commit()
-        return user
+        return "ok"
 
     def login_user(self, data: dict):
         with Session(self.engine) as session:

@@ -1,7 +1,8 @@
-export const getProjectComments = async (projectData) => {
+export async function getProjectComments(projectData){
     const project_id = projectData.id;
+    const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
     try {
-      const response = await fetch(`http://localhost:8000/comment/by_project?project_id=${project_id}`, {
+      const response = await fetch(`${backendUrl}/comment/by_project?project_id=${project_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

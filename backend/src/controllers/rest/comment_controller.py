@@ -1,3 +1,5 @@
+import json
+
 from pydantic import parse_obj_as
 from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
@@ -58,6 +60,6 @@ class CommentController:
     @view_config(route_name='delete_comment', request_method="DELETE")
     def delete_comment_by_id(self):
         comment_id = self.request.GET['comment_id']
-        result: Comment = self.comments_service.delete_comment(comment_id)
-        response = Response(json=result.get_json())
+        result = self.comments_service.delete_comment(comment_id)
+        response = Response(json=json.dumps(result))
         return response

@@ -36,8 +36,8 @@ class UsersService(Users):
         return user_entity_dto_mapper(result)
 
     def delete_user(self, user_id) -> User:
-        deleted_user = self.user_repository.delete_user(user_id)
-        return user_entity_dto_mapper(deleted_user)
+        result = self.user_repository.delete_user(user_id)
+        return result
 
     def login_user(self, email: str, password: str):
         data = {"login": email, "password": password}

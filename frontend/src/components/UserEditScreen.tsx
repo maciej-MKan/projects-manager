@@ -23,7 +23,7 @@ const UpdateUserData = (data, state) => {
       projects: state.projects,
     };
   
-    fetch('http://localhost:8000/user/update', {
+    fetch(`${backendUrl}/user/update`, {
       method: 'PUT',
       credentials: 'include',
       mode: 'cors',
@@ -84,9 +84,20 @@ const EditUserData: React.FC = () => {
     setCurrentScreen('form');
   };
 
+  const handleLogout = () => {
+    document.cookie = "auth_tkt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.setItem('User_ID', "NaN");
+    navigate('/login');
+  }
+
 
   return (
-    <div>
+    <div className="container" style={{ marginLeft: '20px', marginTop: '10px'}}>
+      <div className='text-end'>
+        <button className="btn btn-primary me-2" onClick={handleLogout}>
+            Logout
+        </button>
+      </div>
       {currentScreen === 'form' && (
         <UserEditForm onCancel={handleCancel} onNext={handleNext} tmpData={formData}/>
       )}

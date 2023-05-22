@@ -3,7 +3,7 @@ from typing import List, Type
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, aliased
 
-from backend.src.infrastructure.database.entity.entity import ProjectEntity, UserEntity
+from backend.src.infrastructure.database.entity.entity import ProjectEntity, UserEntity, ProjectUser
 from backend.src.infrastructure.database.repositories.contracts.project_repository_interface import ProjectsRepository
 
 
@@ -74,4 +74,4 @@ class ProjectsRepositoryImpl(ProjectsRepository):
             project = session.query(ProjectEntity).filter(ProjectEntity.id == project_id).first()
             session.delete(project)
             session.commit()
-        return project
+        return "ok"

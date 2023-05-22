@@ -70,7 +70,7 @@ class ManagementRepositoryImpl(ManagementRepository):
                 project_user = ProjectUser(user_id=user.id, project_id=project_data.id)
                 session.merge(project_user)
 
-            session.refresh(project_data)
+            # session.refresh(project_data)
             session.commit()
 
             updated: Type[ProjectEntity] = self.project_repo.get_project_by_id(project_data.id)

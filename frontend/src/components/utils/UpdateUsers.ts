@@ -1,10 +1,8 @@
-export const updateUsers = async (users) => {
-  console.log("users")
-  console.log(users)
-  console.log("users")
+export async function updateUsers(users){
+  const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
     try {
       const requests = users.map((user) =>
-        fetch('http://localhost:8000/user/update', {
+        fetch(`${backendUrl}/user/update`, {
           method: 'PUT',
           credentials: 'include',
           mode: 'cors',

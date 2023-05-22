@@ -31,7 +31,7 @@ class CommentsRepositoryImpl(CommentsRepository):
         with Session(self.engine) as session:
             session.add(comment_data)
             session.commit()
-            session.refresh(comment_data)
+            # session.refresh(comment_data)
             return comment_data
 
     def update_comment(self, comment_data: CommentEntity) -> Type[CommentEntity] | None:
@@ -51,4 +51,4 @@ class CommentsRepositoryImpl(CommentsRepository):
             comment = session.query(CommentEntity).filter(CommentEntity.id == comment_id).first()
             session.delete(comment)
             session.commit()
-        return comment
+        return "ok"

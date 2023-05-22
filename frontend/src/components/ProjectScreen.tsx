@@ -27,7 +27,7 @@ const ProjectsScreen: React.FC = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await fetch('http://localhost:8000/projects', {
+                const response = await fetch(`${backendUrl}/projects`, {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -58,7 +58,7 @@ const ProjectsScreen: React.FC = () => {
     const fetchUserData = async () => {
         try {
             const user_id = localStorage.getItem('User_ID');
-            const response = await fetch(`http://localhost:8000/user?user_id=${user_id}`, {
+            const response = await fetch(`${backendUrl}/user?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

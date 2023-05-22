@@ -1,6 +1,6 @@
-export const addComment = async (projectId, comment) => {
+export async function addComment(projectId, comment){
     try {
-      const response = await fetch('http://localhost:8000/comment/new', {
+      const response = await fetch(`${backendUrl}/comment/new`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

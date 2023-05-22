@@ -1,3 +1,5 @@
+import json
+
 from pydantic import parse_obj_as
 from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
@@ -56,7 +58,7 @@ class UserController:
     def delete_user_by_id(self):
         user_id = self.request.GET['user_id']
         result = self.users_service.delete_user(user_id)
-        response = Response(json=result.get_json())
+        response = Response(json=json.dumps(result))
         return response
 
     # def includeme(self, config):

@@ -1,7 +1,9 @@
-export const deleteProject = async (projectData) => {
+export async function deleteProject(projectData){
     const project_id = projectData.id;
+    const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+
     try {
-      const response = await fetch(`http://localhost:8000/project/delete?project_id=${project_id}`, {
+      const response = await fetch(`${backendUrl}/project/delete?project_id=${project_id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

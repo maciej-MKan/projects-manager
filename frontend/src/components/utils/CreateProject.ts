@@ -1,11 +1,11 @@
 import { format, parseISO } from 'date-fns';
 
-export const createProject = async (projectData) => {
+export async function createProject(projectData){
     try {
         projectData.start_date = format(parseISO(projectData.start_date), "yyyy-MM-dd'T'HH:mm:ss");
         projectData.end_date = format(parseISO(projectData.end_date), "yyyy-MM-dd'T'HH:mm:ss");
 
-      const response = await fetch('http://localhost:8000/project/new', {
+      const response = await fetch(`${backendUrl}/project/new`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

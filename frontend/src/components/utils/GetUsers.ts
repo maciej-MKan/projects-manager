@@ -1,6 +1,8 @@
 export async function fetchUsers(): Promise<[]> {
+    const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+
     try {
-      const response = await fetch('http://localhost:8000/users', {
+      const response = await fetch(`${backendUrl}/users`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -11,8 +13,6 @@ export async function fetchUsers(): Promise<[]> {
       if (response.ok) {
         const data = await response.json();
         const parsedUsers = data.map((user) => JSON.parse(user));
-        // Mapowanie odpowiedzi na listę użytkowników
-        console.log(parsedUsers)
         return parsedUsers;
       } else {
         throw new Error('Błąd pobierania użytkowników');

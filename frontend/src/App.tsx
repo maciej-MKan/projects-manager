@@ -1,6 +1,5 @@
-import React, { useState, createContext, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ProjectsScreen from './components/ProjectScreen.tsx';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import LoginScreen from './components/LoginScreen.tsx';
 import UserEditScreen from './components/UserEditScreen.tsx';
 import UserProjectsScreen from './components/UserProjectsScreen.tsx';
@@ -11,6 +10,7 @@ import CreateComment from './components/CommentCreateScreen.tsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   
   useEffect(() => {
     const userId = parseInt(localStorage.getItem('User_ID'), 10);
@@ -22,17 +22,19 @@ function App() {
     };
     console.log(isLoggedIn)
 
-  }, []);
+  });
 
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
+
   return (
     <Router>
       <div className="container">
         <Routes>
-          <Route path="/" element={isLoggedIn ? <UserProjectsScreen /> : <LoginScreen onLogin={handleLogin} />}/>
+          <Route path="/" element={!isLoggedIn ? <LoginScreen onLogin={handleLogin} /> : <UserProjectsScreen  />}/>
+          <Route path="/login" element={<LoginScreen onLogin={handleLogin} /> } />
           <Route path="/edit-profile" element={isLoggedIn ? <UserEditScreen /> : <LoginScreen onLogin={handleLogin} />} />
           <Route path='/project-details' element={isLoggedIn ? <ProjectDetails /> : <LoginScreen onLogin={handleLogin} />} />
           <Route path='/project' element={isLoggedIn ? <CreateProjectScreen /> : <LoginScreen onLogin={handleLogin} />} />

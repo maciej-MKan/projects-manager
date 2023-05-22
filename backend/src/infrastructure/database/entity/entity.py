@@ -17,20 +17,16 @@ class ProjectUser:
     __tablename__ = 'project_users'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete="DELETE"))
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="DELETE"))
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id'))
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
 
     user_list: Mapped["UserEntity"] = relationship(
-        back_populates="project_asoc",
-        passive_deletes="all",
+        # back_populates="project_asoc",
         lazy="subquery",
-        post_update=True
     )
     project_list: Mapped["ProjectEntity"] = relationship(
-        back_populates="user_asoc",
-        passive_deletes="all",
+        # back_populates="user_asoc",
         lazy="subquery",
-        post_update=True
     )
 
 
@@ -47,18 +43,14 @@ class ProjectEntity:
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     users: Mapped[List["UserEntity"]] = relationship(secondary="project_users",
                                                      back_populates="projects",
-                                                     passive_deletes=True,
-                                                     post_update=True,
                                                      lazy="subquery",
-                                                     overlaps="user_list,project_list, project_asoc"
+                                                     overlaps="user_list,project_list, project_asoc",
                                                      )
 
-    user_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="project_list",
-                                                          passive_deletes=True,
-                                                          post_update=True,
-                                                          lazy="subquery",
-                                                          overlaps="users"
-                                                          )
+    # user_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="project_list",
+    #                                                       lazy="subquery",
+    #                                                       overlaps="users"
+    #                                                       )
     comments: Mapped[List["CommentEntity"]] = relationship()
 
 
@@ -76,18 +68,14 @@ class UserEntity:
     phone_number: Mapped[str] = mapped_column()
     projects: Mapped[List["ProjectEntity"]] = relationship(secondary="project_users",
                                                            back_populates="users",
-                                                           passive_deletes=True,
-                                                           post_update=True,
                                                            lazy="subquery",
                                                            overlaps="project_list,user_asoc,user_list"
                                                            )
 
-    project_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="user_list",
-                                                             passive_deletes=True,
-                                                             post_update=True,
-                                                             lazy="subquery",
-                                                             overlaps="projects,users"
-                                                             )
+    # project_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="user_list",
+    #                                                          lazy="subquery",
+    #                                                          overlaps="projects,users"
+    #                                                          )
     comments: Mapped[List["CommentEntity"]] = relationship()
 
 

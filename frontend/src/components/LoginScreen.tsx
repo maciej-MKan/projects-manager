@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginScreenProps {
   onLogin: () => void;
@@ -7,10 +8,12 @@ interface LoginScreenProps {
 const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:8000/login', {
+      const response = await fetch(`${backendUrl}/login`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -34,6 +37,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     } catch (error) {
       // Wystąpił błąd połączenia lub inny błąd, obsłuż go
     }
+
+    onLogin();
+    navigate('/');
   };
 
   return (

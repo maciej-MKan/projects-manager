@@ -1,11 +1,12 @@
 import { format, parseISO } from 'date-fns';
 
-export const updateProject = async (projectData) => {
+export async function updateProject(projectData){
+  const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
     try {
         projectData.start_date = format(parseISO(projectData.start_date), "yyyy-MM-dd'T'HH:mm:ss");
         projectData.end_date = format(parseISO(projectData.end_date), "yyyy-MM-dd'T'HH:mm:ss");
 
-      const response = await fetch('http://localhost:8000/project/update', {
+      const response = await fetch(`${backendUrl}/project/update`, {
         method: 'PUT',
         credentials: 'include',
         mode: 'cors',

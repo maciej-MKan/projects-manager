@@ -34,9 +34,9 @@ const CreateProjectScreen: React.FC = () => {
 
     try {
         if(!projectData.id){
-            const updatedProject = await createProject(projectData);
+            await createProject(projectData);
         } else {
-            const updatedProject = await updateProject(projectData);
+            await updateProject(projectData);
         }
         // Wyczyszczenie danych formularza
         setProjectData({
@@ -89,7 +89,7 @@ const CreateProjectScreen: React.FC = () => {
       {step === 1 && (
         <>
           <div>
-            <h1>Project {projectData.id}</h1>
+            <h2>Project {projectData.id}</h2>
             <table className="table">
               <thead>
                 <tr>

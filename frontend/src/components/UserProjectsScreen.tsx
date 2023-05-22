@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { redirect, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
+import { fetchUser } from './utils/GetUserData.ts';
 
 const ProjectsScreen: React.FC = () => {
     const [projects, setProjects] = useState([]);
@@ -15,6 +16,8 @@ const ProjectsScreen: React.FC = () => {
         status: 'new',
         users: [],
       };
+      
+    const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
   
 
     function renderProjects(projects) {
@@ -46,37 +49,21 @@ const ProjectsScreen: React.FC = () => {
     const fetchUserData = async () => {
         try {
             const user_id = localStorage.getItem('User_ID');
-            const response = await fetch(`http://localhost:8000/user?user_id=${user_id}`, {
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            credentials: 'include',
-            mode: 'cors',
-            });
-    
-            if (response.ok) {
-                const userDataRaw = await response.json();
-                const parseUser = JSON.parse(userDataRaw)
-                setUserData(parseUser);
-            } else {
-            console.log("bad data");
-            localStorage.setItem('User_ID', 'null');
-            redirect('/')
-            // Wystąpił błąd podczas pobierania danych użytkownika, obsłuż go
+            const user = await fetchUser(user_id)
+            setUserData(user);
+            localStorage.setItem('User_ID', user.id);
             }
-        } catch (error) {
+        catch (error) {
             console.log("error" + {error});
             localStorage.setItem('User_ID', 'null');
-            redirect('/')
-            // Wystąpił błąd połączenia lub inny błąd, obsłuż go
+            navigate('/login')
         }
         };
 
         const fetchProjects = async () => {
             try {
                 const user_id = localStorage.getItem('User_ID');
-                const response = await fetch(`http://localhost:8000/user/self_projects?user_id=${user_id}`, {
+                const response = await fetch(`${backendUrl}/user/self_projects?user_id=${user_id}`, {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -104,7 +91,8 @@ const ProjectsScreen: React.FC = () => {
         };
 
         fetchUserData();
-        fetchProjects()
+        fetchProjects();
+        console.log("frm env", backendUrl)
 
     }, []);
 
@@ -138,7 +126,7 @@ const ProjectsScreen: React.FC = () => {
         <div className="container">
             {userData && (
                 <div>
-                <p><h2>Hello, {userData.name}! <button className="btn btn-primary" onClick={handleEditProfile}>Edit profile</button></h2></p>
+                <h2>Hello, {userData.name}! <button className="btn btn-primary" onClick={handleEditProfile}>Edit profile</button></h2>
                 </div>
             )}
             <h2 className="mb-4">Your projects: </h2>
