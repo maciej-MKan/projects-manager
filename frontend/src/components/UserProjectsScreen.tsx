@@ -20,7 +20,7 @@ const ProjectsScreen: React.FC = () => {
     function renderProjects(projects) {
         return projects.map((project) => (
           <tr key={project.id}>
-            <td>{project.id}</td>
+            {/* <td>{project.id}</td> */}
             <td>{project.name}</td>
             <td>{project.description}</td>
             <td>{format(new Date(project.start_date), 'yyyy-MM-dd')}</td>
@@ -28,12 +28,12 @@ const ProjectsScreen: React.FC = () => {
             <td>{project.status}</td>
             <td>{project.author}</td>
             <td>
-                <select onChange={(e) => handleProjectActions(e.target.value, project)}>
-                <option value="">Wybierz akcję</option>
-                <option value="edit">Edycja</option>
-                <option value="comment">Dodaj komentarz</option>
-                <option value="details">Szczegóły projektu</option>
-                <option value="delete">Usuń</option>
+              <select className="form-select" onChange={(e) => handleProjectActions(e.target.value, project)}>
+                <option value="">Select action</option>
+                <option value="edit">Edit</option>
+                <option value="comment">Add comment</option>
+                <option value="details">Project details</option>
+                <option value="delete">Delete</option>
               </select>
             </td>
           </tr>
@@ -135,33 +135,33 @@ const ProjectsScreen: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="container">
             {userData && (
                 <div>
-                <p>Hello, {userData.name}!  <button onClick={handleEditProfile}>Edit proffile</button></p>
+                <p><h2>Hello, {userData.name}! <button className="btn btn-primary" onClick={handleEditProfile}>Edit profile</button></h2></p>
                 </div>
-                 )}
-          <h1>Projects:</h1>
-          <div>
-            <button onClick={handleAddProject}>Add new project</button>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
-                <th>Author</th>
-                <th>Options</th>
-              </tr>
-            </thead>
-            <tbody>
-              {renderProjects(projects)}
-            </tbody>
-          </table>
+            )}
+            <h2 className="mb-4">Your projects: </h2>
+            <div className="mb-3">
+                <button className="btn btn-success" onClick={handleAddProject}>Add new project</button>
+            </div>
+            <table className="table">
+                <thead>
+                <tr>
+                    {/* <th>ID</th> */}
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Author</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {renderProjects(projects)}
+                </tbody>
+            </table>
         </div>
       );      
 };

@@ -37,29 +37,31 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   };
 
   return (
-    <div>
-      <h2>Ekran logowania</h2>
+    <div className="container" style={{ marginLeft: '20px', marginTop: '10px'}}>
+      <h2 className="mb-4">Please login: </h2>
       <form>
-        <div>
-          <label htmlFor="login">Login:</label>
+        <div className="mb-3">
+          <label htmlFor="login" className="form-label">Username:</label>
           <input
             type="text"
+            className="form-control"
             id="login"
             value={login}
             onChange={(e) => setLogin(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="password">Hasło:</label>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password:</label>
           <input
             type="password"
+            className="form-control"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="button" onClick={handleLogin}>
-          Zaloguj się
+        <button type="button" className="btn btn-primary" style={{ marginRight: '10px' }} onClick={handleLogin}>
+          Log In
         </button>
       </form>
     </div>

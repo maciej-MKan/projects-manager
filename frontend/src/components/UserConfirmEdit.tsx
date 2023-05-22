@@ -29,39 +29,40 @@ const ConfirmEdit: React.FC<ConfirmScreenProps> = ({ onCancel, onBack, onConfirm
   }
 
   return (
-    <div>
-      <h2>Ekran potwierdzenia</h2>
-      <p>Proszę potwierdzić wprowadzone dane:</p>
-      <div>
-        <strong>Imię:</strong> {formDataValue.firstName}
+    <div className="container mt-4">
+      <p>Please confirm the entered data:</p>
+      <div className="mb-3">
+        <strong>First Name:</strong> {formDataValue.firstName}
+      </div>
+      <div className="mb-3">
+        <strong>Last Name:</strong> {formDataValue.lastName}
+      </div>
+      <div className="mb-3">
+        <strong>Password:</strong> {formDataValue.password}
+      </div>
+      <div className="mb-3">
+        <strong>Age:</strong> {formDataValue.age}
+      </div>
+      <div className="mb-3">
+        <strong>Gender:</strong> {formDataValue.gender === 'male' ? 'Male' : 'Female'}
+      </div>
+      <div className="mb-3">
+        <strong>Email Address:</strong> {formDataValue.email}
+      </div>
+      <div className="mb-3">
+        <strong>Phone Number:</strong> {formDataValue.phone}
       </div>
       <div>
-        <strong>Nazwisko:</strong> {formDataValue.lastName}
+        <button className="btn btn-secondary me-2" onClick={onCancel}>
+          Cancel
+        </button>
+        <button className="btn btn-primary me-2" onClick={handleBack}>
+          Back
+        </button>
+        <button className="btn btn-success" onClick={handleConfirm}>
+          Confirm
+        </button>
       </div>
-      <div>
-        <strong>Hasło:</strong> {formDataValue.password}
-      </div>
-      <div>
-        <strong>Wiek:</strong> {formDataValue.age}
-      </div>
-      <div>
-        <strong>Płeć:</strong> {formDataValue.gender === 'male' ? 'Mężczyzna' : 'Kobieta'}
-      </div>
-      <div>
-        <strong>Adres e-mail:</strong> {formDataValue.email}
-      </div>
-      <div>
-        <strong>Numer telefonu:</strong> {formDataValue.phone}
-      </div>
-      <button type="button" onClick={onCancel}>
-        Anuluj
-      </button>
-      <button type="button" onClick={handleBack}>
-        Powrót
-      </button>
-      <button type="button" onClick={handleConfirm}>
-        Wykonaj
-      </button>
     </div>
   );
 };

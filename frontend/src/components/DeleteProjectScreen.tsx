@@ -9,7 +9,7 @@ const DeleteProjectScreen: React.FC = () => {
 
 
     const handleCancel = () => {
-        navigate(-2);
+        navigate(-1);
     }
 
     const handleDelete = async (event: React.FormEvent) => {
@@ -27,18 +27,22 @@ const DeleteProjectScreen: React.FC = () => {
 
     const DeleteProject = (projectData) => {
     return (
-        <div>
-        <h1>Usuwanie projektu</h1>
-        <h2>Nazwa projektu: {projectData.name}</h2>
-        <p>Opis: {projectData.description}</p>
-        <p>Lista użytkowników:</p>
-        <ul>
-            {projectData.users.map((user) => (
-            <li key={user.id}>{`${user.name} ${user.surname}`}</li>
-            ))}
-        </ul>
-        <button onClick={handleDelete}>Delete</button>
-        <button onClick={handleCancel}>Cancel</button>
+        <div className="container">
+            <h1>Project Deletion</h1>
+            <h2>Project Name: {projectData.name}</h2>
+            <p>Description: {projectData.description}</p>
+            <p>User List:</p>
+            <ul>
+                {projectData.users.map((user) => (
+                <li key={user.id}>{`${user.name} ${user.surname}`}</li>
+                ))}
+            </ul>
+            <button className="btn btn-danger me-2" onClick={handleDelete}>
+                Delete
+            </button>
+            <button className="btn btn-secondary me-2" onClick={handleCancel}>
+                Cancel
+            </button>
         </div>
     );
     };

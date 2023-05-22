@@ -30,6 +30,7 @@ function App() {
 
   return (
     <Router>
+      <div className="container">
         <Routes>
           <Route path="/" element={isLoggedIn ? <UserProjectsScreen /> : <LoginScreen onLogin={handleLogin} />}/>
           <Route path="/edit-profile" element={isLoggedIn ? <UserEditScreen /> : <LoginScreen onLogin={handleLogin} />} />
@@ -38,6 +39,7 @@ function App() {
           <Route path='/project-delete' element={isLoggedIn ? <DeleteProjectScreen /> : <LoginScreen onLogin={handleLogin} />} />
           <Route path='/comment' element={isLoggedIn ? <CreateComment /> : <LoginScreen onLogin={handleLogin} />} />
         </Routes>
+      </div>
     </Router>
   );
 }

@@ -67,6 +67,10 @@ const CreateProjectScreen: React.FC = () => {
     // setSelectedUser(user);
   };
 
+  const handleCancel = () =>{
+    navigate(-1);
+  }
+
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -81,125 +85,140 @@ const CreateProjectScreen: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       {step === 1 && (
         <>
+          <div>
+            <h1>Project {projectData.id}</h1>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Project Name</th>
+                  <th>Description</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  {projectData.id && <th>Status</th>}
+                  <th> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input
+                      type="text"
+                      name="name"
+                      value={projectData.name}
+                      onChange={handleInputChange}
+                      placeholder="Project Name"
+                      className="form-control"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="description"
+                      value={projectData.description}
+                      onChange={handleInputChange}
+                      placeholder="Description"
+                      className="form-control"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="date"
+                      name="start_date"
+                      value={projectData.start_date.substring(0, 10)}
+                      onChange={handleInputChange}
+                      placeholder="Start Date"
+                      className="form-control"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="date"
+                      name="end_date"
+                      value={projectData.end_date.substring(0, 10)}
+                      onChange={handleInputChange}
+                      placeholder="End Date"
+                      className="form-control"
+                    />
+                  </td>
+                  {projectData.id && (
+                    <td>
+                      <select
+                        name="status"
+                        value={projectData.status}
+                        onChange={handleStatusChange}
+                        className="form-control"
+                      >
+                        <option value="NEW">NEW</option>
+                        <option value="IN_PROGRESS">IN PROGRESS</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                      </select>
+                    </td>
+                  )}
+                  <td>
+                    <select onChange={handleUserChange} className="form-control">
+                      <option value="">Add User</option>
+                      {users.map((user, index) => {
+                        if (!selectedUsers.includes(user)) {
+                          return (
+                            <option key={index} value={index}>
+                              {`${user.name} ${user.surname}`}
+                            </option>
+                          );
+                        }
+                      })}
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             <div>
-                <h1>Project {projectData.id}</h1>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Nazwa projektu</th>
-                      <th>Opis</th>
-                      <th>Data rozpoczęcia</th>
-                      <th>Data zakończenia</th>
-                      {projectData.id && <th>Status</th>}
-                      <th>Użytkownik</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <input
-                          type="text"
-                          name="name"
-                          value={projectData.name}
-                          onChange={handleInputChange}
-                          placeholder="Nazwa projektu"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="description"
-                          value={projectData.description}
-                          onChange={handleInputChange}
-                          placeholder="Opis"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          name="start_date"
-                          value={projectData.start_date.substring(0, 10)}
-                          onChange={handleInputChange}
-                          placeholder="Data rozpoczęcia"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          name="end_date"
-                          value={projectData.end_date.substring(0, 10)}
-                          onChange={handleInputChange}
-                          placeholder="Data zakończenia"
-                        />
-                      </td>
-                      {projectData.id && (
-                        <td>
-                          <select
-                            name="status"
-                            value={projectData.status}
-                            onChange={handleStatusChange}
-                          >
-                            <option value="NEW">NEW</option>
-                            <option value="IN_PROGRESS">IN PROGRESS</option>
-                            <option value="COMPLETED">COMPLETED</option>
-                          </select>
-                        </td>
-                      )}
-                      <td>
-                        <select onChange={handleUserChange}>
-                          <option value="">Wybierz użytkownika</option>
-                          {users.map((user, index) => {
-                            if (!selectedUsers.includes(user)) {
-                              return (
-                                <option key={index} value={index}>
-                                  {`${user.name} ${user.surname}`}
-                                </option>
-                              );
-                            }
-                          })}
-                        </select>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div>
-                    <h3>Wybrani użytkownicy:</h3>
-                    {selectedUsers.map((user, index) => (
-                    <div key={index}>
-                        <p>{`${user.name} ${user.surname}`}</p>
-                    </div>
-                    ))}
+              <h3>Project Users:</h3>
+              {selectedUsers.map((user, index) => (
+                <div key={index}>
+                  <p>{`${user.name} ${user.surname}`}</p>
                 </div>
+              ))}
             </div>
-            <div>
-                <button onClick={handleNextStep}>Dalej</button>
-                <button onClick={() => navigate(-1)}>Anuluj</button>
-            </div>
+          </div>
+          <div>
+            <button className="btn btn-primary me-2" onClick={handleNextStep}>
+              Next
+            </button>
+            <button className="btn btn-secondary" onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
         </>
       )}
 
       {step === 2 && (
         <div>
-          <h1>Ekran potwierdzający</h1>
-          <p>Nazwa projektu: {projectData.name}</p>
-          <p>Opis: {projectData.description}</p>
+          <h1>Confirmation project data</h1>
+          <p>Project Name: {projectData.name}</p>
+          <p>Description: {projectData.description}</p>
           <p>Status: {projectData.status}</p>
-          <p>Data rozpoczęcia: {projectData.start_date}</p>
-          <p>Data zakończenia: {projectData.end_date}</p>
+          <p>Start Date: {projectData.start_date}</p>
+          <p>End Date: {projectData.end_date}</p>
           <div>
-                <h3>Wybrani użytkownicy:</h3>
-                {selectedUsers.map((user, index) => (
-                <div key={index}>
-                    <p>{`${user.name} ${user.surname}`}</p>
-                </div>
-                ))}
+            <h3>Project Users:</h3>
+            {selectedUsers.map((user, index) => (
+              <div key={index}>
+                <p>{`${user.name} ${user.surname}`}</p>
+              </div>
+            ))}
           </div>
-          <button onClick={handleSubmit}>Wykonaj</button>
-          <button onClick={handlePreviousStep}>Powrót</button>
-          <button onClick={() => navigate(-1)}>Anuluj</button>
+          <button className="btn btn-success me-2" onClick={handleSubmit}>
+            Submit
+          </button>
+          <button className="btn btn-primary me-2" onClick={handlePreviousStep}>
+            Back
+          </button>
+          <button className="btn btn-secondary" onClick={handleCancel}>
+            Cancel
+          </button>
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface EditFormProps {
     onCancel: () => void;
@@ -24,6 +24,7 @@ const EditForm: React.FC<EditFormProps> = ({ onCancel, onNext, tmpData }) => {
     const [gender, setGender] = useState(tmpData.gender);
     const [email, setEmail] = useState(tmpData.email);
     const [phone, setPhone] = useState(tmpData.phone);
+    const [maskedPassword, setMaskedPassword] = useState('');
 
 
   const handleNext = () => {
@@ -39,71 +40,78 @@ const EditForm: React.FC<EditFormProps> = ({ onCancel, onNext, tmpData }) => {
     });
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMaskedPassword(password.replace(/./g, '*'));
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [password]);
+
   return (
-    <div>
-      <h2>Formularz edycji danych użytkownika</h2>
+    <div className="container mt-4">
+      <h2>Edit User Data Form</h2>
       <form>
-        <div>
-          <label>Imię:</label>
+        <div className="mb-3">
+          <label className="mr-3">First Name:</label>
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
-        <div>
-          <label>Nazwisko:</label>
+        <div className="mb-3">
+          <label className="mr-3">Last Name:</label>
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
-        <div>
-          <label>Hasło:</label>
+        <div className="mb-3">
+          <label className="mr-3">Password:</label>
           <input
-            type="text"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div>
-          <label>Wiek:</label>
+        <div className="mb-3">
+          <label className="mr-3">Age:</label>
           <input
             type="number"
             value={age}
             onChange={(e) => setAge(e.target.value)}
           />
         </div>
-        <div>
-          <label>Płeć:</label>
+        <div className="mb-3">
+          <label className="mr-3">Gender:</label>
           <select value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="">Wybierz</option>
-            <option value="male">Mężczyzna</option>
-            <option value="female">Kobieta</option>
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
           </select>
         </div>
-        <div>
-          <label>Adres e-mail:</label>
+        <div className="mb-3">
+          <label className="mr-3">Email Address:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
-          <label>Numer telefonu:</label>
+        <div className="mb-3">
+          <label className="mr-3">Phone Number:</label>
           <input
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
-        <button type="button" onClick={onCancel}>
-          Anuluj
+        <button type="button" className="btn btn-secondary me-2" onClick={onCancel}>
+          Cancel
         </button>
-        <button type="button" onClick={handleNext}>
-          Dalej
+        <button type="button" className="btn btn-primary me-2" onClick={handleNext}>
+          Next
         </button>
       </form>
     </div>
