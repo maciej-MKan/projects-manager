@@ -47,9 +47,16 @@ class ManagementRepositoryImpl(ManagementRepository):
 
         return updated
 
-    def update_project_with_users(self, project_data: ProjectEntity) -> Type[ProjectEntity]:
+    def create_project_with_users(self, user_data: ProjectEntity):
+        return self._process_project_with_users(user_data, self.project_repo.add_project)
+
+    def update_project_with_users(self, user_data: ProjectEntity):
+        return self._process_project_with_users(user_data, self.project_repo.update_project)
+
+    def _process_project_with_users(self, project_data: ProjectEntity, method) -> Type[ProjectEntity]:
+        users = project_data.users
         with Session(self.engine) as session:
-            self.project_repo.update_project(project_data, session)
+            method(project_data, session)
             status = 0
             for user in project_data.users:
                 updated_project = self.user_repo.update_user(user, session)
@@ -59,13 +66,13 @@ class ManagementRepositoryImpl(ManagementRepository):
                 raise Exception(f"update error, correct {status} updated")
 
             session.query(ProjectUser).filter(ProjectUser.project_id == project_data.id).delete()
-            for user in project_data.users:
-                print("+++++++", user.id, project_data.id, project_data.users)
+            for user in users:
                 project_user = ProjectUser(user_id=user.id, project_id=project_data.id)
                 session.merge(project_user)
 
+            session.refresh(project_data)
             session.commit()
 
-        updated: Type[ProjectEntity] = self.project_repo.get_project_by_id(project_data.id)
+            updated: Type[ProjectEntity] = self.project_repo.get_project_by_id(project_data.id)
 
         return updated

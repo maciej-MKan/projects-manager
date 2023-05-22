@@ -34,7 +34,7 @@ class ProjectsService(Projects):
     def create_new_project(self, project: DTOProject):
         project.status = "NEW"
         project_entity = project_dto_entity_mapper(project)
-        new_project_entity = self.project_repository.add_project(project_entity)
+        new_project_entity = self.management_repository.create_project_with_users(project_entity)
         return project_entity_dto_mapper(new_project_entity)
 
     def update_project(self, new_project_data: DTOProject):

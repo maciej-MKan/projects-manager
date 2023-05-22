@@ -25,7 +25,7 @@ class UsersRepositoryImpl(UsersRepository):
         with Session(self.engine) as session:
             session.add(user)
             session.commit()
-            session.refresh(user)
+            # session.refresh(user)
             print("user ", user)
             return user
 
@@ -43,7 +43,7 @@ class UsersRepositoryImpl(UsersRepository):
                 raise e
             finally:
                 session.close()
-
+        # user_data.password = 'password'
         session.query(UserEntity).filter(UserEntity.id == user_data.id).update(
             {
                 UserEntity.first_name: user_data.first_name,

@@ -33,6 +33,7 @@ def get_routing(config: Configurator):
     config.add_route('update_comment', '/comment/update')
     config.add_route('delete_comment', '/comment/delete')
     config.add_route('user_comments', '/comment/by_user')
+    config.add_route('project_comments', '/comment/by_project')
 
     config.add_route('login', '/login')
 

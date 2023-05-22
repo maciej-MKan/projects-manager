@@ -16,8 +16,9 @@ mapper_registry = registry()
 class ProjectUser:
     __tablename__ = 'project_users'
 
-    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete="CASCADE"), primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="CASCADE"), primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete="DELETE"))
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="DELETE"))
 
     user_list: Mapped["UserEntity"] = relationship(
         back_populates="project_asoc",

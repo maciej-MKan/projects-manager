@@ -56,7 +56,6 @@ const CreateProjectScreen: React.FC = () => {
     }
     };
 
-  const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([...state.users]);
   const [users, setUsers] = useState([]);
 

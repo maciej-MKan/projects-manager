@@ -20,6 +20,7 @@ def project_entity_dto_mapper(entity: ProjectEntity):
 
 
 def project_dto_entity_mapper(project_data: Project):
+    print(project_data.users)
     if not project_data.users:
         project_data.users = []
     users_ = [user_dto_entity_mapper(user) for user in project_data.users]
@@ -53,6 +54,8 @@ def user_dto_entity_mapper(user_data: User) -> UserEntity:
     # if not user_data.projects:
     #     user_data.projects = []
     # projects_ = [project_dto_entity_mapper(project) for project in user_data.projects]
+    print(user_data)
+    print(user_data.id)
     return UserEntity(
         id=user_data.id,
         first_name=user_data.name,

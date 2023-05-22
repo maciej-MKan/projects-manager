@@ -121,13 +121,16 @@ const ProjectsScreen: React.FC = () => {
                 navigate('/project', {state: project})
                 break;
             case 'comment':
+                navigate('/comment', {state: project})
                 console.log("comment.");
                 break;
             case 'details':
                 console.log("details.");
+                navigate('/project-details', {state: project})
                 break;
             case 'delete':
-                console.log('delete')
+                navigate('/project-delete', {state: project})
+
         };
     };
 

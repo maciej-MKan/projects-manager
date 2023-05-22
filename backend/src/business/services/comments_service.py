@@ -25,6 +25,10 @@ class CommentsService(Comments):
         comment_entity: list[CommentEntity] | None = self.comment_repository.get_comment_by_user_id(user_id)
         return map_comments_list(comment_entity)
 
+    def get_comments_by_project_id(self, user_id):
+        comment_entity: list[CommentEntity] | None = self.comment_repository.get_comment_by_project_id(user_id)
+        return map_comments_list(comment_entity)
+
     def get_comment_details(self, comment_id: int):
         comment_entity: list[CommentEntity] | None = self.comment_repository.get_comment_by_id(comment_id)
         if comment_entity:

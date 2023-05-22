@@ -33,6 +33,13 @@ class CommentController:
         response = Response(json=comments)
         return response
 
+    @view_config(route_name='project_comments', request_method="GET")
+    def get_comments_by_project_id(self) -> Response:
+        project_id = self.request.GET['project_id']
+        comments = [comment.get_json() for comment in self.comments_service.get_comments_by_project_id(project_id)]
+        response = Response(json=comments)
+        return response
+
     @view_config(route_name='update_comment', request_method="PUT")
     def update_comment(self):
         comment_data: dict = self.request.json_body

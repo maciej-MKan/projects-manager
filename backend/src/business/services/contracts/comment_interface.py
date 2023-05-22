@@ -26,3 +26,7 @@ class Comments(ABC):
     @abstractmethod
     def get_comments_by_user_id(self, user_id):
         pass
+
+    @abstractmethod
+    def get_comments_by_project_id(self, project_id):
+        pass

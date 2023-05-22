@@ -30,3 +30,7 @@ class CommentsRepository(ABC):
     @abstractmethod
     def get_comment_by_user_id(self, user_id) -> List[CommentEntity] | None:
         pass
+
+    @abstractmethod
+    def get_comment_by_project_id(self, user_id) -> List[CommentEntity] | None:
+        pass

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from backend.src.infrastructure.database.entity.entity import UserEntity
+from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectEntity
 
 
 class ManagementRepository(ABC):
@@ -10,6 +10,10 @@ class ManagementRepository(ABC):
         pass
 
     @abstractmethod
-    def update_project_with_users(self, user_data: UserEntity):
+    def update_project_with_users(self, user_data: ProjectEntity):
+        pass
+
+    @abstractmethod
+    def create_project_with_users(self, user_data: ProjectEntity):
         pass
 

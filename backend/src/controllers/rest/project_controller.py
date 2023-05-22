@@ -48,8 +48,11 @@ class ProjectController:
     @view_config(route_name='create_project', request_method="POST")
     def add_project(self):
         project_data: dict = self.request.json_body
-        result = self.projects_service.create_new_project(parse_obj_as(Project, project_data))
-        response = Response(json=result.get_json())
+        project: Project = parse_obj_as(Project, project_data)
+        users = [parse_obj_as(User, user) for user in project.users]
+        project.users = users
+        project_update_result = self.projects_service.create_new_project(project)
+        response = Response(json=project_update_result.get_json())
         return response
 
     @view_config(route_name='delete_project', request_method="DELETE")
