@@ -63,6 +63,8 @@ const CreateComment = () => {
           <p>Project Name: {state.name}</p>
           <p>Project Author: {state.author}</p>
           <p>Comment: {comment}</p>
+          {/* <p>State: {state.id}</p>
+          <p>date: {today.getDate()}</p> */}
           <button className="btn btn-success me-2" onClick={handleSubmit}>
             Submit
           </button>

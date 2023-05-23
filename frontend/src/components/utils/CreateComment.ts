@@ -1,4 +1,6 @@
 export async function addComment(projectId, comment){
+  const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+
     try {
       const response = await fetch(`${backendUrl}/comment/new`, {
         method: 'POST',

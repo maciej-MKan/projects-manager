@@ -1,6 +1,7 @@
 from pyramid import renderers
 from pyramid.config import Configurator
 
+from backend.src.controllers.exceptions.exceptions_view import failed_validation, failed_argument
 from backend.src.controllers.rest import user_controller, comment_controller, project_controller
 from backend.src.controllers.securite import login
 
@@ -37,5 +38,5 @@ def get_routing(config: Configurator):
 
     config.add_route('login', '/login')
 
-    # config.add_exception_view(failed_validation)
-    # config.add_exception_view(failed_argument)
+    config.add_exception_view(failed_validation)
+    config.add_exception_view(failed_argument)
