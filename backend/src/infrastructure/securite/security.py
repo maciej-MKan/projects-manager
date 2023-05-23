@@ -29,7 +29,7 @@ class SecurityPolicy:
         return self.authtkt.remember(request, userid, **kw)
 
     def forget(self, request, **kw):
-        return self.authtkt.forget(request, **kw)
+        return self.authtkt.forget(request)
 
 
 def includeme(config):

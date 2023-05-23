@@ -1,6 +1,8 @@
 import { format, parseISO } from 'date-fns';
 
 export async function createProject(projectData){
+  const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+
     try {
         projectData.start_date = format(parseISO(projectData.start_date), "yyyy-MM-dd'T'HH:mm:ss");
         projectData.end_date = format(parseISO(projectData.end_date), "yyyy-MM-dd'T'HH:mm:ss");

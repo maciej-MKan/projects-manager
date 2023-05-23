@@ -29,10 +29,9 @@ class CommentsRepositoryImpl(CommentsRepository):
 
     def add_comment(self, comment_data: CommentEntity) -> CommentEntity:
         with Session(self.engine) as session:
-            session.add(comment_data)
+            session.merge(comment_data)
             session.commit()
-            # session.refresh(comment_data)
-            return comment_data
+        return comment_data
 
     def update_comment(self, comment_data: CommentEntity) -> Type[CommentEntity] | None:
         with Session(self.engine) as session:

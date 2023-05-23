@@ -5,6 +5,7 @@ import { addComment } from './utils/CreateComment.ts';
 const CreateComment = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const project = state;
   const [comment, setComment] = useState('');
   const [step, setStep] = useState(1);
 
@@ -13,19 +14,16 @@ const CreateComment = () => {
     setComment(e.target.value);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    // try {
-    //   // Dodawanie komentarza
-    //   await addComment(state.projectId, comment);
-
-    //   // Przekierowanie do ekranu z szczegółami projektu
-    //   navigate(`/project-details`, {state: state});
-    // } catch (error) {
-    //   console.error(error);
-    //   // Obsługa błędu dodawania komentarza
-    // }
+    
+    try{
+      await addComment(state.id, comment);
+      navigate("/project-details", {state: state})
+    } catch (error){
+      console.log(error);
+      navigate("/login");
+    }
   };
 
   const handleNext = () => {

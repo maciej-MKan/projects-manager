@@ -38,7 +38,6 @@ const CreateProjectScreen: React.FC = () => {
         } else {
             await updateProject(projectData);
         }
-        // Wyczyszczenie danych formularza
         setProjectData({
             name: '',
             description: '',
@@ -48,11 +47,9 @@ const CreateProjectScreen: React.FC = () => {
             status: 'new',
             users: [],
         });
-    // Przeniesienie na ekran z którego nastąpiło wejście na funkcjonalność
     navigate(-1);
     } catch (error) {
         console.error(error);
-        // Obsługa błędu podczas tworzenia projektu lub aktualizacji użytkowników
     }
     };
 
@@ -61,10 +58,9 @@ const CreateProjectScreen: React.FC = () => {
 
   const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedIndex = event.target.value;
-    const user = users[selectedIndex]; // Uzyskanie pełnego obiektu użytkownika na podstawie indeksu
+    const user = users[selectedIndex];
     setSelectedUsers((prevUsers) => [...prevUsers, user]);
     setProjectData({ ...projectData, users: selectedUsers });
-    // setSelectedUser(user);
   };
 
   const handleCancel = () =>{

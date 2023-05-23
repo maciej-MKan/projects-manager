@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getProjectComments } from './utils/GetProjectComments.ts';
+import { format, parseISO } from 'date-fns';
+import { fetchUser } from './utils/GetUserData.ts';
 
 const ProjectDetails = () => {
   const location = useLocation();
@@ -20,12 +22,29 @@ const ProjectDetails = () => {
     } catch (error) {
       console.error(error);
     }
+
   };
+    const [authorName, setAuthorName] = useState('');
+  
+    const fetchAuthorName = async (user_id) => {
+      try {
+        const data = await fetchUser(user_id);
+        setAuthorName(`${data.first_name} ${data.last_name}`);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchAuthorName(projectData.author);
+    }, [projectData.author]);
+
   console.log(comments.length) 
 
   return (
     <div className="container" style={{ marginLeft: '20px', marginTop: '10px'}}>
       <h2>Project Details</h2>
+      <p>Author: {projectData.author}</p>
       <p>Name: {projectData.name}</p>
       <p>Description: {projectData.description}</p>
       <p>Status: {projectData.status}</p>
@@ -51,15 +70,16 @@ const ProjectDetails = () => {
                   style={comment.author === projectData.author ? { backgroundColor: 'lightblue' } : {}}
                 >
                   <td>{comment.author}</td>
-                  <td>{comment.date}</td>
-                  <td>{comment.content}</td>
+                  <td>{format(parseISO(comment.date), "dd-MM-yyyy'  'HH:mm:ss")}</td>
+                  <td>{comment.description}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+          
         </>
       )}
-      <button className="btn btn-primary mt-2" onClick={() => navigate(-1)}>
+      <button className="btn btn-primary mt-2" onClick={() => navigate('/')}>
         Back
       </button>
     </div>

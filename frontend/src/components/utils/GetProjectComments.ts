@@ -12,7 +12,7 @@ export async function getProjectComments(projectData){
       });
   
       if (!response.ok) {
-        throw new Error('Wystąpił błąd podczas tworzenia projektu.');
+        throw new Error('Error when fetch comment data');
       }
   
       const data = await response.json();

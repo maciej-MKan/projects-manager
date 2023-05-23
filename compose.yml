@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=project_manager
+    ports:
+      - "5432:5432"
+    restart: always
+  frontend:
+    build:
+      context: frontend
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/code/src
+      - /project/node_modules
+    networks:
+      - react-spring
+    depends_on:
+      - backend
+    expose:
+      - 3306
+      - 33060

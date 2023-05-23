@@ -24,7 +24,6 @@ class UsersRepositoryImpl(UsersRepository):
             session.add(user)
             session.commit()
             # session.refresh(user)
-            print("user ", user)
             return user
 
     def update_user(self, user_data: UserEntity, session: Session = None) -> Type[UserEntity] | UserEntity:
@@ -52,6 +51,12 @@ class UsersRepositoryImpl(UsersRepository):
                 UserEntity.phone_number: user_data.phone_number,
             }
         )
+        if user_data.password is not None:
+            session.query(UserEntity).filter(UserEntity.id == user_data.id).update(
+                {
+                    UserEntity.password: user_data.password
+                }
+            )
 
         return user_data
 

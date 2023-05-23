@@ -1,5 +1,8 @@
 export async function addComment(projectId, comment){
+  
   const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+  const author = localStorage.getItem('User_ID');
+  let date = new Date().toJSON();
 
     try {
       const response = await fetch(`${backendUrl}/comment/new`, {
@@ -10,16 +13,17 @@ export async function addComment(projectId, comment){
         credentials: 'include',
         mode: 'cors',
         body: JSON.stringify({
-          projectId: projectId,
-          comment: comment,
+          project: projectId,
+          author: author,
+          description: comment,
+          date: date
         }),
       });
   
       if (!response.ok) {
-        throw new Error('Wystąpił błąd podczas dodawania komentarza.');
+        throw new Error('Error when comment adding');
       }
   
-      // Przetwarzanie odpowiedzi z serwera (jeśli wymagane)
     } catch (error) {
       console.error(error);
       throw error;

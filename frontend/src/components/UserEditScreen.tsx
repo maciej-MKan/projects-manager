@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import UserEditForm from './UserEditForm.tsx';
 import UserConfirmEdit from './UserConfirmEdit.tsx';
+import { logout } from './utils/Logout.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 
@@ -83,9 +84,14 @@ const EditUserData: React.FC = () => {
     setCurrentScreen('form');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     document.cookie = "auth_tkt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.setItem('User_ID', "NaN");
+    try{
+      await logout();
+    } catch (error){
+      console.log(error);
+    }
     navigate('/login');
   }
 

@@ -51,7 +51,7 @@ class ProjectEntity:
     #                                                       lazy="subquery",
     #                                                       overlaps="users"
     #                                                       )
-    comments: Mapped[List["CommentEntity"]] = relationship()
+    project_comments: Mapped[List["CommentEntity"]] = relationship(lazy="subquery")
 
 
 @mapper_registry.mapped
@@ -76,7 +76,7 @@ class UserEntity:
     #                                                          lazy="subquery",
     #                                                          overlaps="projects,users"
     #                                                          )
-    comments: Mapped[List["CommentEntity"]] = relationship()
+    user_comments: Mapped[List["CommentEntity"]] = relationship(backref="project_comments")
 
 
 @mapper_registry.mapped
@@ -84,7 +84,20 @@ class CommentEntity:
     __tablename__ = 'project_comments'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete="CASCADE"), nullable=False)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
     comment: Mapped[str] = mapped_column(nullable=False)
     timestamp: Mapped[int] = mapped_column(nullable=False)
+
+    project_rel = relationship("ProjectEntity",
+                               lazy="subquery",
+                               back_populates="project_comments",
+                               # backref='projects',
+                               # single_parent=True,
+                               cascade="all, delete")
+    #
+    # user_rel = relationship("UserEntity",
+    #                         lazy="subquery",
+    #                         back_populates="comments",
+    #                         single_parent=True,
+    #                         cascade="all, delete-orphan", )

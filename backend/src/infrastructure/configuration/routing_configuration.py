@@ -37,6 +37,6 @@ def get_routing(config: Configurator):
     config.add_route('project_comments', '/comment/by_project')
 
     config.add_route('login', '/login')
+    config.add_route('logout', '/logout')
 
-    config.add_exception_view(failed_validation)
-    config.add_exception_view(failed_argument)
+    # config.add_exception_view(failed_validation)

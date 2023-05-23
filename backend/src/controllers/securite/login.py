@@ -1,6 +1,6 @@
 from pyramid.csrf import new_csrf_token
 from pyramid.response import Response
-from pyramid.security import remember
+from pyramid.security import remember, forget
 from pyramid.view import view_config, view_defaults
 
 from backend.src.infrastructure.securite.authenticate import authenticate
@@ -27,3 +27,9 @@ class LoginView:
         response = Response(json={'result': 'ng'})
         return response
 
+    @view_config(route_name='logout', request_method='GET')
+    def logout(self):
+        headers = forget(self.request)
+
+        response = Response(json={'result': 'logout'}, headerlist=headers)
+        return response

@@ -26,7 +26,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         body: `login=${login}&password=${SHA256(password).toString()}`
       });
 
-      // Obsłuż odpowiedź z serwera
       if (response.ok) {
         const user_id = await response.json();
         console.log(user_id.result);

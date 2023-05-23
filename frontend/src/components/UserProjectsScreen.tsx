@@ -80,13 +80,11 @@ const ProjectsScreen: React.FC = () => {
                     console.log("bad data")
                     localStorage.setItem('User_ID', 'null');
                     redirect('/')
-                    // Wystąpił błąd podczas pobierania danych, obsłuż go
                 }
             } catch (error) {
                 console.log("error")
                 localStorage.setItem('User_ID', 'null');
                 navigate('/')
-                // Wystąpił błąd połączenia lub inny błąd, obsłuż go
             }
         };
 
@@ -110,10 +108,8 @@ const ProjectsScreen: React.FC = () => {
                 break;
             case 'comment':
                 navigate('/comment', {state: project})
-                console.log("comment.");
                 break;
             case 'details':
-                console.log("details.");
                 navigate('/project-details', {state: project})
                 break;
             case 'delete':
