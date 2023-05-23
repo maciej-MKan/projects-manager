@@ -1,6 +1,7 @@
 from pyramid import renderers
 from pyramid.config import Configurator
 
+from backend.src.controllers.exceptions.exceptions_view import failed_validation, failed_argument
 from backend.src.controllers.rest import user_controller, comment_controller, project_controller
 from backend.src.controllers.securite import login
 
@@ -15,6 +16,7 @@ def get_routing(config: Configurator):
 
     config.add_renderer("json", json_renderer)
     config.add_route('projects', '/projects')
+    config.add_route('project_by_id', '/project')
     config.add_route('create_project', '/project/new')
     config.add_route('update_project', '/project/update')
     config.add_route('delete_project', '/project/delete')
@@ -32,8 +34,9 @@ def get_routing(config: Configurator):
     config.add_route('update_comment', '/comment/update')
     config.add_route('delete_comment', '/comment/delete')
     config.add_route('user_comments', '/comment/by_user')
+    config.add_route('project_comments', '/comment/by_project')
 
     config.add_route('login', '/login')
+    config.add_route('logout', '/logout')
 
     # config.add_exception_view(failed_validation)
-    # config.add_exception_view(failed_argument)

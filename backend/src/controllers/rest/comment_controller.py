@@ -1,3 +1,5 @@
+import json
+
 from pydantic import parse_obj_as
 from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
@@ -33,6 +35,13 @@ class CommentController:
         response = Response(json=comments)
         return response
 
+    @view_config(route_name='project_comments', request_method="GET")
+    def get_comments_by_project_id(self) -> Response:
+        project_id = self.request.GET['project_id']
+        comments = [comment.get_json() for comment in self.comments_service.get_comments_by_project_id(project_id)]
+        response = Response(json=comments)
+        return response
+
     @view_config(route_name='update_comment', request_method="PUT")
     def update_comment(self):
         comment_data: dict = self.request.json_body
@@ -51,6 +60,6 @@ class CommentController:
     @view_config(route_name='delete_comment', request_method="DELETE")
     def delete_comment_by_id(self):
         comment_id = self.request.GET['comment_id']
-        result: Comment = self.comments_service.delete_comment(comment_id)
-        response = Response(json=result.get_json())
+        result = self.comments_service.delete_comment(comment_id)
+        response = Response(json=json.dumps(result))
         return response

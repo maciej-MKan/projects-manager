@@ -16,18 +16,17 @@ mapper_registry = registry()
 class ProjectUser:
     __tablename__ = 'project_users'
 
-    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete="CASCADE"), primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="CASCADE"), primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id'))
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
 
     user_list: Mapped["UserEntity"] = relationship(
-        back_populates="project_asoc",
-        passive_deletes="all",
-        post_update=True
+        # back_populates="project_asoc",
+        lazy="subquery",
     )
     project_list: Mapped["ProjectEntity"] = relationship(
-        back_populates="user_asoc",
-        passive_deletes="all",
-        post_update=True
+        # back_populates="user_asoc",
+        lazy="subquery",
     )
 
 
@@ -44,16 +43,15 @@ class ProjectEntity:
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     users: Mapped[List["UserEntity"]] = relationship(secondary="project_users",
                                                      back_populates="projects",
-                                                     passive_deletes=True,
-                                                     post_update=True,
-                                                     lazy="subquery"
+                                                     lazy="subquery",
+                                                     overlaps="user_list,project_list, project_asoc",
                                                      )
 
-    user_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="project_list",
-                                                          passive_deletes=True,
-                                                          post_update=True
-                                                          )
-    comments: Mapped[List["CommentEntity"]] = relationship()
+    # user_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="project_list",
+    #                                                       lazy="subquery",
+    #                                                       overlaps="users"
+    #                                                       )
+    project_comments: Mapped[List["CommentEntity"]] = relationship(lazy="subquery")
 
 
 @mapper_registry.mapped
@@ -70,16 +68,15 @@ class UserEntity:
     phone_number: Mapped[str] = mapped_column()
     projects: Mapped[List["ProjectEntity"]] = relationship(secondary="project_users",
                                                            back_populates="users",
-                                                           passive_deletes=True,
-                                                           post_update=True,
-                                                           lazy="subquery"
+                                                           lazy="subquery",
+                                                           overlaps="project_list,user_asoc,user_list"
                                                            )
 
-    project_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="user_list",
-                                                             passive_deletes=True,
-                                                             post_update=True
-                                                             )
-    comments: Mapped[List["CommentEntity"]] = relationship()
+    # project_asoc: Mapped[List["ProjectUser"]] = relationship(back_populates="user_list",
+    #                                                          lazy="subquery",
+    #                                                          overlaps="projects,users"
+    #                                                          )
+    user_comments: Mapped[List["CommentEntity"]] = relationship(backref="project_comments")
 
 
 @mapper_registry.mapped
@@ -87,7 +84,20 @@ class CommentEntity:
     __tablename__ = 'project_comments'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete="CASCADE"), nullable=False)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
     comment: Mapped[str] = mapped_column(nullable=False)
     timestamp: Mapped[int] = mapped_column(nullable=False)
+
+    project_rel = relationship("ProjectEntity",
+                               lazy="subquery",
+                               back_populates="project_comments",
+                               # backref='projects',
+                               # single_parent=True,
+                               cascade="all, delete")
+    #
+    # user_rel = relationship("UserEntity",
+    #                         lazy="subquery",
+    #                         back_populates="comments",
+    #                         single_parent=True,
+    #                         cascade="all, delete-orphan", )

@@ -2,9 +2,6 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from backend.src.business.models.DTOProject import Project
-from backend.src.business.models.DTOUser import User
-
 
 class Comment(BaseModel):
     id: int = None

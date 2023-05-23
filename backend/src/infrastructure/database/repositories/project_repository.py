@@ -1,9 +1,9 @@
 from typing import List, Type
 
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
-from backend.src.infrastructure.database.entity.entity import ProjectEntity
+from backend.src.infrastructure.database.entity.entity import ProjectEntity, UserEntity, ProjectUser
 from backend.src.infrastructure.database.repositories.contracts.project_repository_interface import ProjectsRepository
 
 
@@ -21,14 +21,26 @@ class ProjectsRepositoryImpl(ProjectsRepository):
 
     def get_project_by_user_id(self, user_id: int) -> list[Type[ProjectEntity]]:
         with Session(self.engine) as session:
-            return session.query(ProjectEntity).filter(ProjectEntity.user_id == user_id).all()
+            projects = session.query(ProjectEntity).join(ProjectEntity.users).filter(UserEntity.id == user_id).all()
+            return projects
 
-    def add_project(self, project_data: ProjectEntity) -> ProjectEntity:
-        with Session(self.engine) as session:
-            session.add(project_data)
-            session.commit()
-            session.refresh(project_data)
-            return project_data
+    def add_project(self, project_data: ProjectEntity, session: Session = None) -> ProjectEntity:
+        if not session:
+            session = Session(self.engine)
+            try:
+                self.add_project(project_data, session)
+                session.commit()
+                # session.refresh(project_data)
+                return project_data
+            except Exception as e:
+                session.rollback()
+                raise e
+            finally:
+                session.close()
+        project_data.users = []
+        session.add(project_data)
+
+        return project_data
 
     def update_project(self, project_data: ProjectEntity, session: Session = None) -> ProjectEntity:
         if not session:
@@ -62,4 +74,4 @@ class ProjectsRepositoryImpl(ProjectsRepository):
             project = session.query(ProjectEntity).filter(ProjectEntity.id == project_id).first()
             session.delete(project)
             session.commit()
-        return project
+        return "ok"

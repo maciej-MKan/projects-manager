@@ -25,6 +25,10 @@ class CommentsService(Comments):
         comment_entity: list[CommentEntity] | None = self.comment_repository.get_comment_by_user_id(user_id)
         return map_comments_list(comment_entity)
 
+    def get_comments_by_project_id(self, user_id):
+        comment_entity: list[CommentEntity] | None = self.comment_repository.get_comment_by_project_id(user_id)
+        return map_comments_list(comment_entity)
+
     def get_comment_details(self, comment_id: int):
         comment_entity: list[CommentEntity] | None = self.comment_repository.get_comment_by_id(comment_id)
         if comment_entity:
@@ -44,5 +48,5 @@ class CommentsService(Comments):
         raise Exception("update error")
 
     def delete_comment(self, comment_id):
-        deleted_comment = self.comment_repository.delete_comment(comment_id)
-        return comment_entity_dto_mapper(deleted_comment)
+        result = self.comment_repository.delete_comment(comment_id)
+        return result

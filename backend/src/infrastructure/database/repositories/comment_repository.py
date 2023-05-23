@@ -23,12 +23,15 @@ class CommentsRepositoryImpl(CommentsRepository):
         with Session(self.engine) as session:
             return session.query(CommentEntity).filter(CommentEntity.user_id == user_id).all()
 
+    def get_comment_by_project_id(self, project_id) -> List[Type[CommentEntity]] | None:
+        with Session(self.engine) as session:
+            return session.query(CommentEntity).filter(CommentEntity.project_id == project_id).all()
+
     def add_comment(self, comment_data: CommentEntity) -> CommentEntity:
         with Session(self.engine) as session:
-            session.add(comment_data)
+            session.merge(comment_data)
             session.commit()
-            session.refresh(comment_data)
-            return comment_data
+        return comment_data
 
     def update_comment(self, comment_data: CommentEntity) -> Type[CommentEntity] | None:
         with Session(self.engine) as session:
@@ -47,4 +50,4 @@ class CommentsRepositoryImpl(CommentsRepository):
             comment = session.query(CommentEntity).filter(CommentEntity.id == comment_id).first()
             session.delete(comment)
             session.commit()
-        return comment
+        return "ok"

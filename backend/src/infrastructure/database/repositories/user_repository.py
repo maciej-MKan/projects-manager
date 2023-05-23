@@ -2,8 +2,6 @@ from typing import List, Type
 
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
-from sqlalchemy.event import listen
-from sqlalchemy.pool import Pool
 
 from backend.src.infrastructure.database.entity.entity import UserEntity
 from backend.src.infrastructure.database.repositories.contracts.user_repository_interface import UsersRepository
@@ -25,8 +23,7 @@ class UsersRepositoryImpl(UsersRepository):
         with Session(self.engine) as session:
             session.add(user)
             session.commit()
-            session.refresh(user)
-            print("user ", user)
+            # session.refresh(user)
             return user
 
     def update_user(self, user_data: UserEntity, session: Session = None) -> Type[UserEntity] | UserEntity:
@@ -43,18 +40,23 @@ class UsersRepositoryImpl(UsersRepository):
                 raise e
             finally:
                 session.close()
-
+        # user_data.password = 'password'
         session.query(UserEntity).filter(UserEntity.id == user_data.id).update(
             {
                 UserEntity.first_name: user_data.first_name,
                 UserEntity.last_name: user_data.last_name,
-                UserEntity.password: user_data.password,
                 UserEntity.age: user_data.age,
                 UserEntity.gender: user_data.gender,
                 UserEntity.email: user_data.email,
                 UserEntity.phone_number: user_data.phone_number,
             }
         )
+        if user_data.password is not None:
+            session.query(UserEntity).filter(UserEntity.id == user_data.id).update(
+                {
+                    UserEntity.password: user_data.password
+                }
+            )
 
         return user_data
 
@@ -63,7 +65,7 @@ class UsersRepositoryImpl(UsersRepository):
             user = session.query(UserEntity).filter(UserEntity.id == user_id).first()
             session.delete(user)
             session.commit()
-        return user
+        return "ok"
 
     def login_user(self, data: dict):
         with Session(self.engine) as session:

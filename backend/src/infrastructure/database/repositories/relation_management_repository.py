@@ -3,7 +3,7 @@ from typing import Type
 from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 
-from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectUser
+from backend.src.infrastructure.database.entity.entity import UserEntity, ProjectUser, ProjectEntity
 from backend.src.infrastructure.database.repositories.contracts.comment_repository_interface import CommentsRepository
 from backend.src.infrastructure.database.repositories.contracts.project_repository_interface import ProjectsRepository
 from backend.src.infrastructure.database.repositories.contracts.relation_management_repository_interface import \
@@ -44,5 +44,35 @@ class ManagementRepositoryImpl(ManagementRepository):
             session.commit()
 
         updated: Type[UserEntity] = self.user_repo.get_user_by_id(user_data.id)
+
+        return updated
+
+    def create_project_with_users(self, user_data: ProjectEntity):
+        return self._process_project_with_users(user_data, self.project_repo.add_project)
+
+    def update_project_with_users(self, user_data: ProjectEntity):
+        return self._process_project_with_users(user_data, self.project_repo.update_project)
+
+    def _process_project_with_users(self, project_data: ProjectEntity, method) -> Type[ProjectEntity]:
+        users = project_data.users
+        with Session(self.engine) as session:
+            method(project_data, session)
+            status = 0
+            for user in project_data.users:
+                updated_project = self.user_repo.update_user(user, session)
+                if updated_project == user:
+                    status += 1
+            if not status == len(project_data.users):
+                raise Exception(f"update error, correct {status} updated")
+
+            session.query(ProjectUser).filter(ProjectUser.project_id == project_data.id).delete()
+            for user in users:
+                project_user = ProjectUser(user_id=user.id, project_id=project_data.id)
+                session.merge(project_user)
+
+            # session.refresh(project_data)
+            session.commit()
+
+            updated: Type[ProjectEntity] = self.project_repo.get_project_by_id(project_data.id)
 
         return updated

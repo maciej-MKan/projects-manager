@@ -14,7 +14,7 @@ class User(BaseModel):
     gender: str = None
     email: str
     phone_number: int = None
-    projects: list = None
+    # projects: list = None
 
     class Config:
         orm_mode = True

@@ -14,11 +14,16 @@ def project_entity_dto_mapper(entity: ProjectEntity):
         start_date=datetime.fromtimestamp(entity.start_date),
         end_date=datetime.fromtimestamp(entity.end_date),
         status=entity.status,
-        author=entity.user_id
+        author=entity.user_id,
+        users=[user_entity_dto_mapper(user) for user in entity.users]
     )
 
 
 def project_dto_entity_mapper(project_data: Project):
+    print(project_data.users)
+    if not project_data.users:
+        project_data.users = []
+    users_ = [user_dto_entity_mapper(user) for user in project_data.users]
     return ProjectEntity(
         id=project_data.id,
         name=project_data.name,
@@ -27,7 +32,7 @@ def project_dto_entity_mapper(project_data: Project):
         end_date=int(project_data.end_date.timestamp()),
         status=project_data.status,
         user_id=project_data.author,
-        # users=project_data.users,
+        users=users_
     )
 
 
@@ -41,14 +46,16 @@ def user_entity_dto_mapper(entity: UserEntity) -> User:
         email=entity.email,
         phone_number=entity.phone_number,
         # projects=[],
-        projects=[project_entity_dto_mapper(project) for project in entity.projects],
+        # projects=[project_entity_dto_mapper(project) for project in entity.projects],
     )
 
 
 def user_dto_entity_mapper(user_data: User) -> UserEntity:
-    if not user_data.projects:
-        user_data.projects = []
-    projects_ = [project_dto_entity_mapper(project) for project in user_data.projects]
+    # if not user_data.projects:
+    #     user_data.projects = []
+    # projects_ = [project_dto_entity_mapper(project) for project in user_data.projects]
+    print(user_data)
+    print(user_data.id)
     return UserEntity(
         id=user_data.id,
         first_name=user_data.name,
@@ -58,7 +65,7 @@ def user_dto_entity_mapper(user_data: User) -> UserEntity:
         gender=user_data.gender,
         email=user_data.email,
         phone_number=user_data.phone_number,
-        projects=projects_,
+        # projects=projects_,
     )
 
 
