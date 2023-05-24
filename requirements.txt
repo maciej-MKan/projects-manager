@@ -1,5 +1,4 @@
 bcrypt==4.0.1
-beautifulsoup4==4.12.2
 dependency-injector==4.41.0
 exceptiongroup==1.1.1
 greenlet==2.0.2
@@ -15,9 +14,7 @@ plaster-pastedeploy==1.0.1
 pluggy==1.0.0
 psycopg2-binary==2.9.6
 pydantic==1.10.7
-PyJWT==2.7.0
 pyramid==2.0
-pyramid-jwt==1.6.1
 pyramid-retry==2.1.1
 pyramid-tm==2.5
 pytest==7.3.1
