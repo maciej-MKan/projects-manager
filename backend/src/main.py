@@ -53,6 +53,9 @@ def main(global_config, **settings):
     app = get_app()
     return app
 
+
+app = get_app()
+
 # if __name__ == '__main__':
 #
 #     run_server(host, port)
