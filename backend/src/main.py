@@ -42,11 +42,12 @@ def get_app():
     return app
 
 
-def run_server(host: str):
-    server = make_server(host, 8000, get_app())
-    print('Starting server at http://localhost:8000')
+def run_server(host: str, port: int):
+    server = make_server(host, port, get_app())
+    print(f'Starting server at http://{host}:{port}')
     server.serve_forever()
 
 
-if __name__ == '__main__':
-    run_server('localhost')
+# if __name__ == '__main__':
+#
+#     run_server(host, port)
