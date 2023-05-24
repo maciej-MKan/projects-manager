@@ -26,6 +26,7 @@ def add_cors_headers_response_callback(event):
                 'Origin': 'http://localhost:3000'
             })
         print(request)
+
     event.request.add_response_callback(cors_headers)
 
 
@@ -47,6 +48,10 @@ def run_server(host: str, port: int):
     print(f'Starting server at http://{host}:{port}')
     server.serve_forever()
 
+
+def main(global_config, **settings):
+    app = get_app()
+    return app
 
 # if __name__ == '__main__':
 #
