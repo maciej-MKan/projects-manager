@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 # Ustawiamy katalog roboczy w kontenerze
 WORKDIR /app
 
-# Kopiujemy plik requirements.txt do kontenera
+
 COPY pyproject.toml pyproject.toml
 COPY .envs/ /app/
 COPY main.py main.py
