@@ -1,2 +1,1 @@
-web: cd frontend && npm install && npm start
-server: gunicorn backend.src.main:app
+web: gunicorn backend.src.main:app
