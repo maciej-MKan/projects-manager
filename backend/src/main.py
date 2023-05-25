@@ -23,7 +23,7 @@ def add_cors_headers_response_callback(event):
                 # 'Access-Control-Request-Headers:':
                 #     'Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cookie, Set-Cookie',
                 'Access-Control-Max-Age': '1728000',
-                'Origin': 'http://localhost:3000'
+                # 'Origin': 'http://localhost:3000'
             })
         print(request)
 
