@@ -6,7 +6,7 @@ from pyramid.request import RequestLocalCache
 class SecurityPolicy:
 
     def __init__(self, secret):
-        self.authtkt = AuthTktCookieHelper(secret)
+        self.authtkt = AuthTktCookieHelper(secret, samesite='none')
         self.identity_cache = RequestLocalCache(self.load_identity)
 
     def load_identity(self, request):

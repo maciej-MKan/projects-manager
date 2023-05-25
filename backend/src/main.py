@@ -10,20 +10,21 @@ from backend.src.infrastructure.configuration.routing_configuration import get_r
 from backend.src.infrastructure.securite.security import SecurityPolicy
 
 load_dotenv('.envs/dev/db.env')
+ORIGIN = os.environ['FRONT_SERVER']
 
 
 def add_cors_headers_response_callback(event):
     def cors_headers(request, response):
         response.headers.update(
             {
-                'Access-Control-Allow-Origin': 'http://mkan-project-manager.herokuapp.com',
+                'Access-Control-Allow-Origin': ORIGIN,
                 'Access-Control-Allow-Methods': '*',
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Credentials': 'true',
                 # 'Access-Control-Request-Headers:':
                 #     'Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cookie, Set-Cookie',
                 'Access-Control-Max-Age': '1728000',
-                'Origin': 'http://mkan-project-manager.herokuapp.com'
+                'Origin': ORIGIN
             })
         print(request)
 
