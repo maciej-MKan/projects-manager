@@ -16,7 +16,7 @@ def add_cors_headers_response_callback(event):
     def cors_headers(request, response):
         response.headers.update(
             {
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                'Access-Control-Allow-Origin': 'origin',
                 'Access-Control-Allow-Methods': '*',
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Credentials': 'true',
