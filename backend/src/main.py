@@ -16,14 +16,14 @@ def add_cors_headers_response_callback(event):
     def cors_headers(request, response):
         response.headers.update(
             {
-                'Access-Control-Allow-Origin': 'origin',
+                'Access-Control-Allow-Origin': 'http://mkan-project-manager.herokuapp.com',
                 'Access-Control-Allow-Methods': '*',
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Credentials': 'true',
                 # 'Access-Control-Request-Headers:':
                 #     'Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cookie, Set-Cookie',
                 'Access-Control-Max-Age': '1728000',
-                # 'Origin': 'http://localhost:3000'
+                'Origin': 'http://mkan-project-manager.herokuapp.com'
             })
         print(request)
 
