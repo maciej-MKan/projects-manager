@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { fetchUser } from './utils/GetUserData.ts';
+import { fetchProjectsByUser } from './utils/GetProjects.ts';
+import { fetchUsers } from './utils/GetUsers.ts';
 
 const ProjectsScreen: React.FC = () => {
     const [projects, setProjects] = useState([]);
     const [userData, setUserData] = useState(null);
+    const [users, setUsers] = useState([]);
     const navigate = useNavigate();
-    const enptyProject = {
+    const emptyProject = {
         name: '',
         description: '',
         start_date: '',
@@ -16,89 +19,59 @@ const ProjectsScreen: React.FC = () => {
         status: 'new',
         users: [],
       };
-      
-    const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
-  
+
+    useEffect(() => {
+        const user_id = localStorage.getItem('User_ID');
+            try {
+                fetchUser(user_id)
+                    .then((res) => setUserData(res));
+                fetchProjectsByUser(user_id)
+                    .then(res => setProjects(res));
+                fetchUsers()
+                    .then(res => setUsers(res));
+                }
+            catch (error) {
+                console.error("error" + {error});
+                localStorage.setItem('User_ID', 'null');
+                navigate('/login')
+            }
+    }, []);
+
+    if(users === undefined || projects === undefined || userData === undefined){
+        return <>Give me 1 second</>
+    }
+
+    const getUserName = (user_id) => {
+        return users.filter(a => a.id == user_id)[0] || {'name': 'loading..', 'surname': ''};
+    }
 
     function renderProjects(projects) {
         return projects.map((project) => (
-          <tr key={project.id}>
-            {/* <td>{project.id}</td> */}
-            <td>{project.name}</td>
-            <td>{project.description}</td>
-            <td>{format(new Date(project.start_date), 'yyyy-MM-dd')}</td>
-            <td>{format(new Date(project.end_date), 'yyyy-MM-dd')}</td>
-            <td>{project.status}</td>
-            <td>{project.author}</td>
-            <td>
-              <select className="form-select" onChange={(e) => handleProjectActions(e.target.value, project)}>
-                <option value="">Select action</option>
-                <option value="edit">Edit</option>
-                <option value="comment">Add comment</option>
-                <option value="details">Project details</option>
-                <option value="delete">Delete</option>
-              </select>
-            </td>
-          </tr>
+            <tr key={project.id}>
+                <td>{project.name}</td>
+                <td>{project.description}</td>
+                <td>{format(new Date(project.start_date), 'yyyy-MM-dd')}</td>
+                <td>{format(new Date(project.end_date), 'yyyy-MM-dd')}</td>
+                <td>{project.status}</td>
+                <td>{getUserName(project.author).name} {getUserName(project.author).surname}</td>
+                <td>
+                    <select className="form-select" onChange={(e) => handleProjectActions(e.target.value, project)}>
+                        <option value="">Select action</option>
+                        <option value="edit">Edit</option>
+                        <option value="comment">Add comment</option>
+                        <option value="details">Project details</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                </td>
+            </tr>
         ));
-      }
-      
-
-
-    useEffect(() => {
-    const fetchUserData = async () => {
-        try {
-            const user_id = localStorage.getItem('User_ID');
-            const user = await fetchUser(user_id)
-            setUserData(user);
-            localStorage.setItem('User_ID', user.id);
-            }
-        catch (error) {
-            console.log("error" + {error});
-            localStorage.setItem('User_ID', 'null');
-            navigate('/login')
-        }
-        };
-
-        const fetchProjects = async () => {
-            try {
-                const user_id = localStorage.getItem('User_ID');
-                const response = await fetch(`${backendUrl}/user/self_projects?user_id=${user_id}`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    credentials: 'include',
-                    mode: 'cors',
-                });
-                console.log(response)
-                if (response.ok) {
-                    const projectsData = await response.json();
-                    const parsedProjects = projectsData.map((project) => JSON.parse(project));
-                    setProjects(parsedProjects);
-                } else {
-                    console.log("bad data")
-                    localStorage.setItem('User_ID', 'null');
-                    redirect('/')
-                }
-            } catch (error) {
-                console.log("error")
-                localStorage.setItem('User_ID', 'null');
-                navigate('/')
-            }
-        };
-
-        fetchUserData();
-        fetchProjects();
-        console.log("frm env", backendUrl)
-
-    }, []);
+    }
 
     const handleEditProfile = () => {
         navigate('/edit-profile', {state: userData});}
 
     const handleAddProject = () => {
-        navigate('/project', {state: enptyProject})
+        navigate('/project', {state: emptyProject})
     }
 
     const handleProjectActions = (target, project) => {
@@ -115,7 +88,7 @@ const ProjectsScreen: React.FC = () => {
             case 'delete':
                 navigate('/project-delete', {state: project})
 
-        };
+        }
     };
 
     return (
@@ -132,7 +105,6 @@ const ProjectsScreen: React.FC = () => {
             <table className="table">
                 <thead>
                 <tr>
-                    {/* <th>ID</th> */}
                     <th>Name</th>
                     <th>Description</th>
                     <th>Start Date</th>

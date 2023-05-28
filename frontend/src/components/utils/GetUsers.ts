@@ -12,12 +12,11 @@ export async function fetchUsers(): Promise<[]> {
         });
       if (response.ok) {
         const data = await response.json();
-        const parsedUsers = data.map((user) => JSON.parse(user));
-        return parsedUsers;
+          return data.map((user) => JSON.parse(user));
       } else {
-        throw new Error('Błąd pobierania użytkowników');
+        throw new Error('Error when users get');
       }
     } catch (error) {
-      throw new Error('Błąd połączenia lub inny błąd');
+      throw new Error(error);
     }
   }
