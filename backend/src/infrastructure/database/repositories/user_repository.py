@@ -51,7 +51,8 @@ class UsersRepositoryImpl(UsersRepository):
                 UserEntity.phone_number: user_data.phone_number,
             }
         )
-        if user_data.password is not None:
+        if len(user_data.password) > 3:
+            print("update " + user_data.password)
             session.query(UserEntity).filter(UserEntity.id == user_data.id).update(
                 {
                     UserEntity.password: user_data.password

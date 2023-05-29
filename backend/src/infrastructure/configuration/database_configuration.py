@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 
 load_dotenv('.envs/dev/db.env')
 
+print(os.environ['DB_USER'])
 
 DATABASE_URI: str = f"postgresql+psycopg2://{os.environ['DB_USER']}:" \
                     f"{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}:" \

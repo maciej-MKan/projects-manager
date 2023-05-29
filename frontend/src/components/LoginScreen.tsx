@@ -7,6 +7,8 @@ interface LoginScreenProps {
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
+  document.cookie = "auth_tkt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();

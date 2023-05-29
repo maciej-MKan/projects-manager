@@ -13,8 +13,7 @@ export async function fetchUser(user_id) {
 
         if (response.ok) {
             const userDataRaw = await response.json();
-            const parseUser = JSON.parse(userDataRaw)
-            return parseUser;
+            return JSON.parse(userDataRaw);
         } else {
             throw new Error('Błąd pobierania użytkowników');
         }
