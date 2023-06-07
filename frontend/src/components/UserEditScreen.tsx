@@ -1,121 +1,128 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import UserEditForm from './UserEditForm.tsx';
 import UserConfirmEdit from './UserConfirmEdit.tsx';
-import { logout } from './utils/Logout.ts';
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const UpdateUserData = (data, state) => {
-    if (!data.password || data.password == '**********' || data.password.lenght < 3){
-        data.hashPassword = '';
-    };
+    if (!data.password || data.password == '**********' || data.password.lenght < 3) {
+        data.password = '';
+    }
+    const user_id =  sessionStorage.getItem('user_id');
     const mappedData = {
-      id: localStorage.getItem('User_ID'),
-      name: data.firstName,
-      surname: data.lastName,
-      password: data.hashPassword,
-      age: data.age,
-      gender: data.gender,
-      email: data.email,
-      phone_number: data.phone,
-      projects: state.projects,
+        first_name: data.first_name || data.firstName,
+        last_name: data.last_name || data.lastName,
+        password: data.password,
+        age: data.age,
+        gender: data.gender === 'male' ? 'Mr' : 'Ms',
+        email: data.email,
+        phone_number: data.phone,
     };
     const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
 
-  
-    fetch(`${backendUrl}/user/update`, {
-      method: 'PUT',
-      credentials: 'include',
-      mode: 'cors',
-      body: JSON.stringify(mappedData),
+    const link = user_id ? `${backendUrl}/users/${user_id}/` : `${backendUrl}/users/`;
+
+    const METHOD = user_id ? 'PUT' : 'POST';
+
+    const token = sessionStorage.getItem('token');
+
+    const header_auth = token ? {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": `Token ${token}`
+    } : {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    };
+
+
+    fetch(`${link}`, {
+        method: `${METHOD}`,
+        headers: header_auth,
+        body: JSON.stringify(mappedData),
     })
-      .then((response) => {
-        if (response.ok) {
-          // Obsłuż sukces
-          console.log('Dane użytkownika zostały zaktualizowane.');
-        } else {
-          // Obsłuż błąd
-          console.error('Wystąpił błąd podczas aktualizacji danych użytkownika.');
-        }
-      })
-      .catch((error) => {
-        // Obsłuż błąd sieciowy
-        console.error('Wystąpił błąd sieciowy:', error);
-      });
-  };
+        .then((response) => {
+            if (response.ok) {
+                console.log('Dane użytkownika zostały zaktualizowane.');
+            } else {
+                console.error(response);
+            }
+        })
+        .catch((error) => {
+            console.error('Wystąpił błąd sieciowy:', error);
+        });
+};
 
 const EditUserData: React.FC = () => {
-  const { state } = useLocation();
-  const [currentScreen, setCurrentScreen] = useState('form');
-  const [formData, setFormData] = useState({
-    firstName: state.name,
-    lastName: state.surname,
-    password: '**********',
-    age: state.age,
-    gender: state.gender,
-    email: state.email,
-    phone: state.phone_number,
-  });
-  const navigate = useNavigate();
+    const {state} = useLocation();
+    const [currentScreen, setCurrentScreen] = useState('form');
+    const [formData, setFormData] = useState(
+        state ? {
+                first_name: state.first_name,
+                last_name: state.last_name,
+                password: '**********',
+                age: state.age,
+                gender: state.gender === 'Mr' ? 'male' : 'female',
+                email: state.email,
+                phone: state.phone_number,
+            } :
+            {
+                first_name: "",
+                last_name: "",
+                firstName: "",
+                lastName: "",
+                password: "",
+                age: "",
+                gender: "",
+                email: "",
+                phone: "",
+            });
+    const navigate = useNavigate();
 
-  const handleNext = (data) => {
-    setFormData(data);
-    setCurrentScreen('confirmation');
-  };
+    const handleNext = (data) => {
+        setFormData(data);
+        setCurrentScreen('confirmation');
+    };
 
-  const handleConfirm = () => {
-    // Wykonanie operacji na danych
-    console.log('Dane użytkownika zostały zaktualizowane:', formData);
-    UpdateUserData(formData, state);
-    // Powrót do ekranu poprzedniego
-    setCurrentScreen('form');
-  };
+    const handleConfirm = () => {
+        console.log('Dane użytkownika zostały zaktualizowane:', formData);
+        UpdateUserData(formData, state);
+        // setCurrentScreen('form');
+    };
 
-  const handleCancel = () => {
-    // Powrót do ekranu poprzedniego
-    setCurrentScreen('form');
-    navigate('/')
-    // window.location.href = '/';
-  };
+    const handleCancel = () => {
+        // setCurrentScreen('form');
+        navigate('/user')
+        // window.location.href = '/';
+    };
 
-  const handleBack = (data) => {
-    setFormData(data)
-    // Powrót do ekranu edycji
-    setCurrentScreen('form');
-  };
+    const handleBack = (data) => {
+        setFormData(data)
+        setCurrentScreen('form');
+    };
 
-  const handleLogout = async () => {
-    document.cookie = "auth_tkt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    localStorage.setItem('User_ID', "NaN");
-    try{
-      await logout();
-    } catch (error){
-      console.log(error);
+    const handleBackFromEdit = () => {
+        navigate(-1)
     }
-    navigate('/login');
-  }
 
-
-  return (
-    <div className="container" style={{ marginLeft: '20px', marginTop: '10px'}}>
-      <div className='text-end'>
-        <button className="btn btn-primary me-2" onClick={handleLogout}>
-            Logout
-        </button>
-      </div>
-      {currentScreen === 'form' && (
-        <UserEditForm onCancel={handleCancel} onNext={handleNext} tmpData={formData}/>
-      )}
-      {currentScreen === 'confirmation' && (
-        <UserConfirmEdit
-          onCancel={handleCancel}
-          onBack={handleBack}
-          onConfirm={handleConfirm}
-          formDataValue={formData}
-        />
-      )}
-    </div>
-  );
+    return (
+        <div className="container" style={{marginLeft: '20px', marginTop: '10px'}}>
+            {currentScreen === 'form' && (
+                <UserEditForm
+                    onCancel={handleCancel}
+                    onNext={handleNext}
+                    onBack={handleBackFromEdit}
+                    tmpData={formData}/>
+            )}
+            {currentScreen === 'confirmation' && (
+                <UserConfirmEdit
+                    onCancel={handleCancel}
+                    onBack={handleBack}
+                    onConfirm={handleConfirm}
+                    formDataValue={formData}
+                />
+            )}
+        </div>
+    );
 };
 
 export default EditUserData;

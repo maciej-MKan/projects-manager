@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import {redirect, useLocation, useNavigate} from 'react-router-dom';
 import { format } from 'date-fns';
 
 const ProjectsScreen: React.FC = () => {
@@ -25,51 +25,53 @@ const ProjectsScreen: React.FC = () => {
 
 
     useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const response = await fetch(`${backendUrl}/projects`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    credentials: 'include',
-                    mode: 'cors',
-                });
-                console.log(response)
-                if (response.ok) {
-                    const projectsData = await response.json();
-                    console.log(localStorage.getItem('User_ID'))
-                    const parsedProjects = projectsData.map((project) => JSON.parse(project));
-                    setProjects(parsedProjects);
-                } else {
-                    console.log("bad data")
-                    localStorage.setItem('User_ID', 'null');
-                    redirect('/')
-                    // Wystąpił błąd podczas pobierania danych, obsłuż go
-                }
-            } catch (error) {
-                console.log("error")
-                localStorage.setItem('User_ID', 'null');
-                navigate('/')
-                // Wystąpił błąd połączenia lub inny błąd, obsłuż go
-            }
-        };
+        const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+        // const fetchProjects = async () => {
+        //     try {
+        //         const response = await fetch(`${backendUrl}/projects/`, {
+        //             method: 'GET',
+        //             headers: {
+        //                 "Content-Type": "application/x-www-form-urlencoded",
+        //             },
+        //             credentials: 'include',
+        //             mode: 'cors',
+        //         });
+        //         console.log(response)
+        //         if (response.ok) {
+        //             const projectsData = await response.json();
+        //             console.log(localStorage.getItem('User_ID'))
+        //             const parsedProjects = projectsData.map((project) => JSON.parse(project));
+        //             setProjects(parsedProjects);
+        //         } else {
+        //             console.log("bad data")
+        //             localStorage.setItem('User_ID', 'null');
+        //             redirect('/')
+        //             // Wystąpił błąd podczas pobierania danych, obsłuż go
+        //         }
+        //     } catch (error) {
+        //         console.log("error")
+        //         localStorage.setItem('User_ID', 'null');
+        //         navigate('/')
+        //         // Wystąpił błąd połączenia lub inny błąd, obsłuż go
+        //     }
+        // };
 
     const fetchUserData = async () => {
         try {
-            const user_id = localStorage.getItem('User_ID');
-            const response = await fetch(`${backendUrl}/user?user_id=${user_id}`, {
+            const { state } = useLocation();
+            const user_id = state.user_id;
+            const response = await fetch(`${backendUrl}/users/${user_id}`, {
             method: 'GET',
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            credentials: 'include',
-            mode: 'cors',
-            });
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Token ${sessionStorage.getItem('token')}`
+            }});
     
             if (response.ok) {
                 const userData = await response.json();
-                setUserData(JSON.parse(userData));
+                console.log(userData)
+                // setUserData(JSON.parse(userData));
             } else {
             console.log("bad data");
             localStorage.setItem('User_ID', 'null');
@@ -84,7 +86,6 @@ const ProjectsScreen: React.FC = () => {
         }
         };
 
-        fetchProjects();
         fetchUserData();
 
     }, []);

@@ -1,20 +1,17 @@
-export async function logout(){
+export async function logout() {
     const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
     try {
-      const response = await fetch(`${backendUrl}/logout`, {
-        method: 'GET',
-        credentials: 'include',
-        mode: 'cors',
-      });
-  
-      if (!response.ok) {
-        throw new Error('Server error');
-      }
-  
-      const data = await response.json();
-      const parsedProject = JSON.parse(data);
-      console.log(parsedProject)
-      return parsedProject;
+        const response = await fetch(`${backendUrl}/login`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Token ${sessionStorage.getItem('token')}`
+            }
+        });
+        return await response.json();
+
     } catch (error) {
-      throw new Error(error)
-    }};
+        throw new Error(error)
+    }
+}

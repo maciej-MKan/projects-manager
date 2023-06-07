@@ -1,27 +1,27 @@
-import {useNavigate} from "react-router-dom";
-
-export async function fetchUser(user_id) {
+export async function refreshUser() {
     const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
-    // const navigate = useNavigate();
-    console.log('in get')
 
     try {
-        const response = await fetch(`${backendUrl}/users/${user_id}/`, {
+        console.log('refresh')
+        const response = await fetch(`${backendUrl}/login`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": `Token ${sessionStorage.getItem('token')}`
-            }});
-
-        if (response.ok){
-         return await response.json();
+            }
+        });
+        if (response.ok) {
+            const res = await response.json();
+            sessionStorage.setItem('user_id', res.user_id)
         } else {
             sessionStorage.removeItem('user_id')
             return {'error': response.status}
+
         }
 
+
     } catch (error) {
-        throw new Error(`Connection Fail [${error}]`);
+        throw new Error(error)
     }
 }

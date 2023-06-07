@@ -9,20 +9,8 @@ import ProjectDetails from './components/ProjectDetilsScreen.tsx';
 import CreateComment from './components/CommentCreateScreen.tsx';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('token') != null);
 
-  
-  useEffect(() => {
-    const userId = parseInt(localStorage.getItem('User_ID'), 10);
-    if (!isNaN(userId)) {
-      console.log(userId)
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    };
-    console.log(isLoggedIn)
-
-  });
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -35,11 +23,12 @@ function App() {
         <Routes>
           <Route path="/" element={!isLoggedIn ? <LoginScreen onLogin={handleLogin} /> : <UserProjectsScreen  />}/>
           <Route path="/login" element={<LoginScreen onLogin={handleLogin} /> } />
-          <Route path="/edit-profile" element={isLoggedIn ? <UserEditScreen /> : <LoginScreen onLogin={handleLogin} />} />
-          <Route path='/project-details' element={isLoggedIn ? <ProjectDetails /> : <LoginScreen onLogin={handleLogin} />} />
-          <Route path='/project' element={isLoggedIn ? <CreateProjectScreen /> : <LoginScreen onLogin={handleLogin} />} />
-          <Route path='/project-delete' element={isLoggedIn ? <DeleteProjectScreen /> : <LoginScreen onLogin={handleLogin} />} />
-          <Route path='/comment' element={isLoggedIn ? <CreateComment /> : <LoginScreen onLogin={handleLogin} />} />
+          <Route path="/user" element={<UserProjectsScreen />} />
+          <Route path="/edit-profile" element={<UserEditScreen />} />
+          <Route path='/project-details' element={<ProjectDetails />} />
+          <Route path='/project' element={<CreateProjectScreen />} />
+          <Route path='/project-delete' element={<DeleteProjectScreen />} />
+          <Route path='/comment' element={<CreateComment />} />
         </Routes>
       </div>
     </Router>

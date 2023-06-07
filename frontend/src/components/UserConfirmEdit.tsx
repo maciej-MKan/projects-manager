@@ -20,6 +20,7 @@ interface FormDataValue {
 
 const ConfirmEdit: React.FC<ConfirmScreenProps> = ({ onCancel, onBack, onConfirm, formDataValue }) => {
 
+    console.log(formDataValue)
   const handleConfirm = () => {
     onConfirm();
   };
