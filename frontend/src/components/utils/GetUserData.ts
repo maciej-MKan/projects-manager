@@ -1,9 +1,5 @@
-import {useNavigate} from "react-router-dom";
-
 export async function fetchUser(user_id) {
     const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
-    // const navigate = useNavigate();
-    console.log('in get')
 
     try {
         const response = await fetch(`${backendUrl}/users/${user_id}/`, {
@@ -15,7 +11,7 @@ export async function fetchUser(user_id) {
             }});
 
         if (response.ok){
-         return await response.json();
+            return await response.json();
         } else {
             sessionStorage.removeItem('user_id')
             return {'error': response.status}

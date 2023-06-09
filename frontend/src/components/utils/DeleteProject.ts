@@ -1,27 +1,28 @@
 export async function deleteProject(projectData){
     const project_id = projectData.id;
     const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+    const request_body = {
+        body: {'id' : project_id}
+    }
 
     try {
-      const response = await fetch(`${backendUrl}/project/delete?project_id=${project_id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        credentials: 'include',
-        mode: 'cors',
+      const response = await fetch(`${backendUrl}/projects/${project_id}`, {
+          method: 'DELETE',
+          credentials: 'include',
+          mode: 'cors',
+          headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": `Token ${sessionStorage.getItem('token')}`
+          }
       });
-  
-      if (!response.ok) {
-        throw new Error('Wystąpił błąd podczas tworzenia projektu.');
-      }
-  
-      const data = await response.json();
-      const parsedProject = JSON.parse(data);
-      console.log(parsedProject)
-      return parsedProject;
+
+        if (response.ok) {
+            return await response.json();
+        } else {
+            return {'error': response}
+        }
     } catch (error) {
-      console.error(error);
-      throw error;
+        throw new Error(`Connection Fail [${error}]`);
     }
-  };
+}

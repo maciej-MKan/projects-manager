@@ -14,8 +14,8 @@ const ProjectsScreen: React.FC = () => {
     const emptyProject = {
         name: '',
         description: '',
-        start_date: '',
-        end_date: '',
+        start_date: 0,
+        end_date: 0,
         author: '',
         status: 'NEW',
         users: [],
@@ -55,7 +55,6 @@ const ProjectsScreen: React.FC = () => {
     useEffect(() => {
         if (userData != null) {
             setProjects(userData.projects)
-            console.log('...')
         }
     }, [userData])
 
@@ -68,7 +67,7 @@ const ProjectsScreen: React.FC = () => {
         return projects.map((project) => (
             <tr key={project.id}>
                 <td>{project.name}</td>
-                <td>{project.description}</td>
+                <td style={{maxWidth: 300, wordWrap: "break-word" ,overflowWrap: "break-word"}}>{project.description}</td>
                 <td>{format(new Date(project.start_date * 1000), 'yyyy-MM-dd')}</td>
                 <td>{format(new Date(project.end_date * 1000), 'yyyy-MM-dd')}</td>
                 <td>{project.status}</td>
@@ -117,13 +116,17 @@ const ProjectsScreen: React.FC = () => {
     };
 
     const handleLogout = async () => {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('user_id')
         try{
-            await logout();
+            await logout().then(() => {
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('user_id');
+            });
         } catch (error){
             console.log(error);
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user_id');
         }
+
         navigate('/login');
     }
 

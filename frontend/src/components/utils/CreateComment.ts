@@ -4,28 +4,30 @@ export async function addComment(projectId, comment){
   const author = localStorage.getItem('User_ID');
   let date = new Date().toJSON();
 
+  const data = {
+    'project' : projectId,
+    'comment' : comment
+  }
+
     try {
-      const response = await fetch(`${backendUrl}/comment/new`, {
+      const response = await fetch(`${backendUrl}/comments/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
         credentials: 'include',
         mode: 'cors',
-        body: JSON.stringify({
-          project: projectId,
-          author: author,
-          description: comment,
-          date: date
-        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": `Token ${sessionStorage.getItem('token')}`
+        },
+        body: JSON.stringify(data),
       });
-  
-      if (!response.ok) {
-        throw new Error('Error when comment adding');
+
+      if (response.ok) {
+        return await response.json();
+      } else {
+        return {'error': await response.json()}
       }
-  
     } catch (error) {
-      console.error(error);
-      throw error;
+      throw new Error(`Connection Fail [${error}]`);
     }
-  };
+  }

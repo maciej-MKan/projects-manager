@@ -26,35 +26,6 @@ const ProjectsScreen: React.FC = () => {
 
     useEffect(() => {
         const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
-        // const fetchProjects = async () => {
-        //     try {
-        //         const response = await fetch(`${backendUrl}/projects/`, {
-        //             method: 'GET',
-        //             headers: {
-        //                 "Content-Type": "application/x-www-form-urlencoded",
-        //             },
-        //             credentials: 'include',
-        //             mode: 'cors',
-        //         });
-        //         console.log(response)
-        //         if (response.ok) {
-        //             const projectsData = await response.json();
-        //             console.log(localStorage.getItem('User_ID'))
-        //             const parsedProjects = projectsData.map((project) => JSON.parse(project));
-        //             setProjects(parsedProjects);
-        //         } else {
-        //             console.log("bad data")
-        //             localStorage.setItem('User_ID', 'null');
-        //             redirect('/')
-        //             // Wystąpił błąd podczas pobierania danych, obsłuż go
-        //         }
-        //     } catch (error) {
-        //         console.log("error")
-        //         localStorage.setItem('User_ID', 'null');
-        //         navigate('/')
-        //         // Wystąpił błąd połączenia lub inny błąd, obsłuż go
-        //     }
-        // };
 
     const fetchUserData = async () => {
         try {
@@ -70,7 +41,6 @@ const ProjectsScreen: React.FC = () => {
     
             if (response.ok) {
                 const userData = await response.json();
-                console.log(userData)
                 // setUserData(JSON.parse(userData));
             } else {
             console.log("bad data");

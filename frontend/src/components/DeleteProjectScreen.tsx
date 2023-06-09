@@ -20,7 +20,7 @@ const DeleteProjectScreen: React.FC = () => {
             navigate('/');
         }catch (error) {
         console.error(error);
-        // Obsługa błędu podczas tworzenia projektu lub aktualizacji użytkowników
+        navigate('/')
     }
         
     };
@@ -31,12 +31,6 @@ const DeleteProjectScreen: React.FC = () => {
             <h1>Project Deletion</h1>
             <h2>Project Name: {projectData.name}</h2>
             <p>Description: {projectData.description}</p>
-            <p>User List:</p>
-            <ul>
-                {projectData.users.map((user) => (
-                <li key={user.id}>{`${user.name} ${user.surname}`}</li>
-                ))}
-            </ul>
             <button className="btn btn-danger me-2" onClick={handleDelete}>
                 Delete
             </button>
@@ -47,8 +41,6 @@ const DeleteProjectScreen: React.FC = () => {
     );
     };
 
-    console.log("state");
-    console.log(state);
     return DeleteProject(state);
 };
 

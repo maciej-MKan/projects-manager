@@ -3,31 +3,29 @@ import { format, parseISO } from 'date-fns';
 export async function createProject(projectData){
   const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
 
-    try {
-        projectData.start_date = format(parseISO(projectData.start_date), "yyyy-MM-dd'T'HH:mm:ss");
-        projectData.end_date = format(parseISO(projectData.end_date), "yyyy-MM-dd'T'HH:mm:ss");
+  try {
+    projectData.start_date = projectData.start_date / 1000;
+    projectData.end_date = projectData.end_date / 1000;
 
-      const response = await fetch(`${backendUrl}/project/new`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(projectData),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Wystąpił błąd podczas tworzenia projektu.');
-      }
-  
-      const data = await response.json();
-      const parsedProject = JSON.parse(data);
-      console.log(parsedProject)
-      return parsedProject;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    const response = await fetch(`${backendUrl}/projects/`, {
+      method: 'POST',
+      credentials: 'include',
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": `Token ${sessionStorage.getItem('token')}`
+      },
+      body: JSON.stringify(projectData),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return {'error': await response.json()}
     }
-  };
+  } catch (error) {
+    throw new Error(`Connection Fail [${error}]`);
+  }
+}
   

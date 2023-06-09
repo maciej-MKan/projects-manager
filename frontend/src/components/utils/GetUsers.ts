@@ -1,22 +1,20 @@
-export async function fetchUsers(): Promise<[]> {
+export async function fetchUsers() {
     const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
 
     try {
-      const response = await fetch(`${backendUrl}/users`, {
+        const response = await fetch(`${backendUrl}/users/`, {
             method: 'GET',
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            credentials: 'include',
-            mode: 'cors',
-        });
-      if (response.ok) {
-        const data = await response.json();
-          return data.map((user) => JSON.parse(user));
-      } else {
-        throw new Error('Error when users get');
-      }
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Token ${sessionStorage.getItem('token')}`
+            }});
+        if (response.ok) {
+            return await response.json();
+        } else {
+            return {'error': response.status}
+        }
     } catch (error) {
-      throw new Error(error);
+        throw new Error(`Connection Fail [${error}]`);
     }
-  }
+}

@@ -30,6 +30,12 @@ export const validatePassword = (value) => {
     return '';
 };
 
+export const validateDate = (value) => {
+    if (value === 0 || value === null){
+        return 'Date is required'
+    }
+}
+
 export const validateName = (value) => {
     if (value.trim() === '') {
         return 'Name is required.';
@@ -44,7 +50,7 @@ export const validateDescription = (value) => {
     if (value.trim() === '') {
         return 'Description is required.';
     }
-    if (!/^[a-zA-Z]{10,30}$/.test(value)) {
+    if (!/^[a-zA-Z\s]{10,30}(?:[^!@#$%^&*]){0,2}$/.test(value)) {
         return 'Description should contain only letters and be between 10 and 30 characters long.';
     }
     return '';

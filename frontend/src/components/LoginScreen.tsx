@@ -22,8 +22,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     try {
       const response = await fetch(`${backendUrl}/login/`, {
         method: "POST",
+        credentials: 'include',
+        mode: 'cors',
         headers: {
           "Content-Type": "application/json",
+          "Accept" : "application/json"
+
         },
         body: JSON.stringify({ username: login, password: password }),
       });

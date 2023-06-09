@@ -2,7 +2,7 @@ export async function getProjectComments(projectData){
     const project_id = projectData.id;
     const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
     try {
-      const response = await fetch(`${backendUrl}/comment/by_project?project_id=${project_id}`, {
+      const response = await fetch(`${backendUrl}/comments/${project_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -14,10 +14,8 @@ export async function getProjectComments(projectData){
       if (!response.ok) {
         throw new Error('Error when fetch comment data');
       }
-  
-      const data = await response.json();
-      const parsedComments = data.map((comment) => JSON.parse(comment));
-      return parsedComments;
+
+      return await response.json();
 
     } catch (error) {
       console.error(error);

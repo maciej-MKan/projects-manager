@@ -4,7 +4,7 @@ import UserConfirmEdit from './UserConfirmEdit.tsx';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 const UpdateUserData = (data, state) => {
-    if (!data.password || data.password == '**********' || data.password.lenght < 3) {
+    if (!data.password || data.password == '**********') {
         data.password = '';
     }
     const user_id =  sessionStorage.getItem('user_id');
@@ -38,23 +38,28 @@ const UpdateUserData = (data, state) => {
     fetch(`${link}`, {
         method: `${METHOD}`,
         headers: header_auth,
+        credentials: 'include',
         body: JSON.stringify(mappedData),
     })
         .then((response) => {
             if (response.ok) {
-                console.log('Dane użytkownika zostały zaktualizowane.');
+                console.log('Correct update data.');
+                return
             } else {
                 console.error(response);
+                return(response)
             }
         })
         .catch((error) => {
-            console.error('Wystąpił błąd sieciowy:', error);
+            console.error('Network Error: ', error);
+            return(error)
         });
 };
 
 const EditUserData: React.FC = () => {
     const {state} = useLocation();
     const [currentScreen, setCurrentScreen] = useState('form');
+    const [error, setError] = useState("");
     const [formData, setFormData] = useState(
         state ? {
                 first_name: state.first_name,
@@ -84,9 +89,13 @@ const EditUserData: React.FC = () => {
     };
 
     const handleConfirm = () => {
-        console.log('Dane użytkownika zostały zaktualizowane:', formData);
-        UpdateUserData(formData, state);
-        // setCurrentScreen('form');
+        const response = UpdateUserData(formData, state);
+        if(response){
+            setError(response)
+        } else {
+        setCurrentScreen('form');
+        navigate('/');
+        }
     };
 
     const handleCancel = () => {
@@ -121,6 +130,7 @@ const EditUserData: React.FC = () => {
                     formDataValue={formData}
                 />
             )}
+             {error && <p className="text-danger">{error}</p>}
         </div>
     );
 };
