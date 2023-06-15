@@ -6,8 +6,8 @@ export async function updateProject(projectData) {
         const toUpdate = {
             'name': projectData.name,
             'description': projectData.description,
-            'start_date': projectData.start_date / 1000,
-            'end_date': projectData.end_date / 1000,
+            'start_date': projectData.start_date,
+            'end_date': projectData.end_date,
             'status' : projectData.status,
             'users': projectData.users.map(u => u.id)
         }

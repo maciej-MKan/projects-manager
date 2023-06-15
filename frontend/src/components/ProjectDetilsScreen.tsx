@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {getProjectComments} from './utils/GetProjectComments.ts';
-import {format, parseISO} from 'date-fns';
-import {fetchUsers} from './utils/GetUsers.ts';
+import {format} from 'date-fns';
 import {fetchProjectDetails} from "./utils/GetProjects.ts";
 
 const ProjectDetails = () => {
@@ -46,13 +44,8 @@ const ProjectDetails = () => {
         return <>Give me 1 second</>
     }
 
-    function getUserData(user_id) {
-        return users.filter(a => a.id == user_id)[0] || {'first_name': 'loading..', 'surname': ''};
-    }
-
-
     return (
-        <div className="container" style={{ marginLeft: '20px', marginTop: '10px' }}>
+        <div className="container" style={{marginLeft: '20px', marginTop: '10px'}}>
             <div className="row">
                 <div className="col-md-6">
                     <h2>Project Details</h2>
@@ -81,11 +74,15 @@ const ProjectDetails = () => {
                                 {comments.map((comment) => (
                                     <tr
                                         key={comment.id}
-                                        style={comment.author === projectData.author ? { backgroundColor: 'lightblue' } : {}}
+                                        style={comment.author === projectData.author ? {backgroundColor: 'lightblue'} : {}}
                                     >
                                         <td>{comment.user.first_name} {comment.user.last_name}</td>
                                         <td>{format(new Date(comment.timestamp * 1000), 'yyyy-MM-dd hh:mm')}</td>
-                                        <td style={{maxWidth: 300, wordWrap: "break-word" ,overflowWrap: "break-word"}}>{comment.comment}</td>
+                                        <td style={{
+                                            maxWidth: 300,
+                                            wordWrap: "break-word",
+                                            overflowWrap: "break-word"
+                                        }}>{comment.comment}</td>
                                     </tr>
                                 ))}
                                 </tbody>
@@ -94,7 +91,7 @@ const ProjectDetails = () => {
                     )}
                 </div>
             </div>
-            <button className="btn btn-secondary mt-2" onClick={() => navigate('/')}>
+            <button className="btn btn-secondary mt-2" onClick={() => navigate('/user')}>
                 Cancel
             </button>
         </div>

@@ -79,7 +79,7 @@ const CreateProjectScreen: React.FC = () => {
     };
 
     const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setProjectData({...projectData, [e.target.name]: new Date(e.target.value).getTime()});
+        setProjectData({...projectData, [e.target.name]: (new Date(e.target.value).getTime() / 1000 )});
         // setError(validatorsMap.get(e.target.name)(e.target.value))
     }
 
@@ -144,7 +144,7 @@ const CreateProjectScreen: React.FC = () => {
 
     function formatData(timestamp) {
         if (timestamp > 0) {
-            return format(new Date(timestamp), 'yyyy-MM-dd');
+            return format(new Date(timestamp * 1000), 'yyyy-MM-dd');
         }
         return ""
     }
