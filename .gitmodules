@@ -1,0 +1,3 @@
+[submodule "backend/projects-manager-spring-api"]
+	path = backend/projects-manager-spring-api
+	url = https://github.com/maciej-MKan/projects-manager-spring-api.git
