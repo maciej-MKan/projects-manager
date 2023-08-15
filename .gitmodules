@@ -1,3 +1,6 @@
 [submodule "backend/projects-manager-spring-api"]
 	path = backend/projects-manager-spring-api
 	url = https://github.com/maciej-MKan/projects-manager-spring-api.git
+[submodule "backend/projects-manager-drf-api"]
+	path = backend/projects-manager-drf-api
+	url = https://github.com/maciej-MKan/drf_projects_api.git
