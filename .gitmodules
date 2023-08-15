@@ -4,3 +4,6 @@
 [submodule "backend/projects-manager-drf-api"]
 	path = backend/projects-manager-drf-api
 	url = https://github.com/maciej-MKan/drf_projects_api.git
+[submodule "backend/projects-manager-pyramid-api"]
+	path = backend/projects-manager-pyramid-api
+	url = https://github.com/maciej-MKan/projects-manager-pyramid-api.git
