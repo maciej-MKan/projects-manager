@@ -1,82 +1,34 @@
 # Project Management Platform
 
-The goal of this project is to create a simple Single Page web application that assists in project management. It consists of an API built with Pyramid or any other Python web framework, and a presentation layer built with React.
+The Project Management Platform is a comprehensive solution for managing projects, tasks, and collaboration within teams. The platform offers an intuitive user interface developed using React for the frontend, while the backend is implemented in three different versions, each showcasing a different backend technology. This design allows for flexibility, enabling the frontend to interact seamlessly with any of the backend versions.
+
+## Features
+
+- Create and manage projects.
+- Assign tasks and monitor progress.
+- Collaborate within teams through comments.
+- User authentication and authorization.
+- Backend flexibility with multiple technology options.
 
 ## Technologies Used
-- Backend: Pyramid, SQLAlchemy, pytest
-- Frontend: React, Bootstrap
 
-## API Endpoints
+### Frontend
+- React
+- Bootstrap
 
-### Projects
-- `GET /projects`: Get all projects
-- `GET /project/{id}`: Get project by ID
-- `POST /project/new`: Create a new project
-- `PUT /project/update`: Update an existing project
-- `DELETE /project/delete`: Delete a project
+### Backend Versions
+- [DRF Backend](backend/projects-manager-drf-api/)
+- [Pyramid Backend](backend/projects-manager-pyramid-api/)
+- [Spring Backend](backend/projects-manager-spring-api/)
 
-### Users
-- `GET /users`: Get all users
-- `GET /user/{id}`: Get user by ID
-- `POST /user/new`: Create a new user
-- `PUT /user/update`: Update an existing user
-- `DELETE /user/delete`: Delete a user
+## Documentation
 
-### Comments
-- `GET /comments`: Get all comments
-- `GET /comment/{id}`: Get comment by ID
-- `POST /comment/new`: Create a new comment
-- `PUT /comment/update`: Update an existing comment
-- `DELETE /comment/delete`: Delete a comment
-- `GET /comment/by_user`: Get comments by user
-- `GET /comment/by_project`: Get comments by project
-
-### Authentication
-- `POST /login`: User login
-- `POST /logout`: User logout
+- [Frontend Documentation](frontend/README.md)
+- [DRF Backend Documentation](backend/projects-manager-drf-api/README.md)
+- [Pyramid Backend Documentation](backend/projects-manager-pyramid-api/README.md)
+- [Spring Backend Documentation](backend/projects-manager-spring-api/README.md)
 
 ## Getting Started
-To get started with this project, follow these steps:
 
-1. Clone the repository:
-```
-https://github.com/maciej-MKan/projects-manager.git
-```
-2. Set up the backend:
-- Install the required Python packages:
-  ```
-  pip install -r backend/requirements.txt
-  ```
-- Configure the database connection in `.envs/dev/db.env` or at os enviroment.
-- Run database migrations:
-  ```
-  backend/resources/init.sql
-  ```
-- Start the backend server:
-  ```
-  gunicorn backend.src.main:app
-  ```
+Follow the individual documentation for each backend version to set up the project locally.
 
-3. Set up the frontend:
-- Install Node.js if not already installed.
-- Navigate to the `frontend` directory:
-  ```
-  cd frontend
-  ```
-- Install the required dependencies:
-  ```
-  npm install
-  ```
-- Start the development server:
-  ```
-  npm start
-  ```
-
-4. Access the application:
-Open your browser and visit `http://localhost:3000` to access the project management platform.
-
-## Running Tests
-To run the tests for the backend, navigate to the `backend` directory and run the following command:
-```
-pytest
-```
