@@ -17,16 +17,16 @@ The Project Management Platform is a comprehensive solution for managing project
 - Bootstrap
 
 ### Backend Versions
-- [DRF Backend](backend/projects-manager-drf-api/)
-- [Pyramid Backend](backend/projects-manager-pyramid-api/)
-- [Spring Backend](backend/projects-manager-spring-api/)
+- [DRF Backend](https://github.com/maciej-MKan/drf_projects_api/)
+- [Pyramid Backend](https://github.com/maciej-MKan/projects-manager-pyramid-api/)
+- [Spring Backend](https://github.com/maciej-MKan/projects-manager-spring-api/)
 
 ## Documentation
 
-- [Frontend Documentation](frontend/README.md)
-- [DRF Backend Documentation](backend/projects-manager-drf-api/README.md)
-- [Pyramid Backend Documentation](backend/projects-manager-pyramid-api/README.md)
-- [Spring Backend Documentation](backend/projects-manager-spring-api/README.md)
+- [Frontend Documentation](https://github.com/maciej-MKan/projects-manager/tree/main/frontend#readme)
+- [DRF Backend Documentation](https://github.com/maciej-MKan/drf_projects_api/tree/main#readme)
+- [Pyramid Backend Documentation](https://github.com/maciej-MKan/projects-manager-pyramid-api/tree/main#readme)
+- [Spring Backend Documentation](https://github.com/maciej-MKan/projects-manager-spring-api/tree/main#readme)
 
 ## Getting Started
 
