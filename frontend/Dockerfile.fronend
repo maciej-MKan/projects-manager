@@ -1,0 +1,16 @@
+# Wybierz obraz bazowy dla Node.js 14
+FROM node:14
+
+# Ustaw katalog roboczy
+WORKDIR /app
+
+# Instaluj zależności
+COPY ./frontend/package.json ./frontend/package-lock.json ./
+RUN npm install
+
+# Kopiuj pliki do kontenera
+COPY ./frontend ./
+
+# Uruchom aplikację React
+CMD ["npm", "start"]
+
