@@ -5,11 +5,11 @@ FROM node:14
 WORKDIR /app
 
 # Instaluj zależności
-COPY ./frontend/package.json ./frontend/package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm install
 
 # Kopiuj pliki do kontenera
-COPY ./frontend ./
+COPY . ./
 
 # Uruchom aplikację React
 CMD ["npm", "start"]
